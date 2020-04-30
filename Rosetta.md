@@ -125,7 +125,20 @@ if __name__=='__main__':
 	fin.write(str('-overwrite')+'\n')
 	fin.write('-nstruct '+str("%d" %nstruct)+'\n')
 ```
-and launch the simulation by typing `sbatch launch_fixbb.sh` where `launch_fixbb.sh` is:
+
+Notice that you will need the file `resfile.txt` that contains two lines:
+
+```sh
+NATAA 
+start
+
+```
+Here, `NATAA` tells `fixbb` to leave every amino acid at their position and only allows the rotamers to change (Dunbrack library). 
+
+`NATRO` would instead leave the natural rotamer as well as the amino acid. 
+Other options are available but they involve design (i.e. change) of amino acids: `ALLAA` will allow the full design of any amino acid while `PIKAA` followed by a list of single letter code restricts the design to just these amino acids (for example `1 A PIKAA NT`).
+
+Launch the simulation by typing `sbatch launch_fixbb.sh` where `launch_fixbb.sh` is:
 
 
 ```sh

@@ -35,7 +35,7 @@ gmx insert-molecules -f Box_Water.pdb -nmol 27 -ci Sodium.pdb -o Box_Water_Na.pd
 that is now executed as `./solvate_script.sh inputfile.pdb`. Note that here, you still need to edit the box dimensions and the number of sodium and chloride ions you need and it will write the output as `Box_Water_Na_Cl.pdb` or `Box_Water_Na.pdb`. The whole script could be changed such that all of these options are read from the command line but here, given how we are planning to use it, it is enough to only edit the input file command.   
 
 
-Now, assuming the output of `solvate_script.sh` was `Box_Water_Na_Cl.pdb` you can script all the steps to convert the PDB into a Tinker XYZ file, including centering in the box, as follows (note that this is an example script for a protein that has a ligand named `X77` containg 67 atoms - you will need to edit the corresponding lines for your case as well as the paths to the executables prior to execution):
+Now, assuming the output of `solvate_script.sh` was `Box_Water_Na_Cl.pdb` you can script all the steps to convert the PDB into a Tinker XYZ file, including centering in the box. The script, `PDBtoXYZ.sh` is given below and ASSUMES that you have a `tinker.key` file (do not change the name) in your directory. Without this `tinker.key` file, a few steps in this script will not work. Note also that this is an example script for a protein that has a ligand named `X77` containg 67 atoms - you will need to edit the corresponding lines for your case as well as the paths to the executables prior to execution.
 
 ```sh
 sed -i 's/SOL/HOH/g' Box_Water_Na_Cl.pdb 

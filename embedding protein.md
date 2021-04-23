@@ -70,7 +70,7 @@ Generate the membrane by typing `membrane -l <lipid_name> -x <size_in_X> -y <siz
 Align the protein to the proper position and orientation in the membrane. This can be easily done using the VMD GUI front end
   1) press "8" key to switch VMD to "move molecule"mode.
   2) holding down the left mouse button while moving the mouse will move the molecule.
-  3) holding down <shift> key and the left mouse button while moveing the mouse will rotate the molecule.
+  3) holding down "shift" key and the left mouse button while moveing the mouse will rotate the molecule.
 
 Once the protein is properly aligned in the membrane, save the coordinate of the protein into a new file `protein_aligned.pdb`.
 

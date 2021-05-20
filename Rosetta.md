@@ -150,7 +150,7 @@ Launch the simulation by typing `sbatch launch_fixbb.sh` where `launch_fixbb.sh`
 #SBATCH -t 4:59:00 
 #SBATCH -A welbornlab
 
-~/rosetta/main/source/bin/fixbb.static.macosclangrelease @flags_fixbb > output.txt
+~/rosetta/main/source/bin/fixbb.static.linuxgccrelease @flags_fixbb > output.txt
 
 ```
 

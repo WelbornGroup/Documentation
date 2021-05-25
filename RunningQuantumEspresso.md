@@ -127,5 +127,53 @@ $PW_COMMAND < input.in > output.out
 This is an example and it is set up to run on the `debug` queue so it should be very fast (less than one minute). You will see that on time you will simulations that last hours and we will need to update the fields in the header of the script to account for that. 
 
 
+###Running geometry optimization of periodic materials
 
+1) Creat a directory for the calculation and copy the `enviroment_variables` and `launch_QE.sh` into the directory.
+
+2) Copy and paste the below input file as discribed above.
+
+```sh
+&CONTROL
+  prefix='Ni_bulk',
+  pseudo_dir = '/home/vwelborn/Espresso/pseudo', 
+/
+
+&SYSTEM
+   ibrav = 2
+   A = 3.52
+
+   ecutwfc =  50.0,
+   ecutrho =  400.0,
+
+   nat =  1,
+   ntyp =  1,
+
+   occupations = 'smearing',
+   smearing = 'mv',
+   degauss = 0.01,
+   
+   nspin = 2
+   starting_magnetization(1)= 0.8
+/
+
+&ELECTRONS
+/
+
+ATOMIC_SPECIES 
+  Ni  58.693  Ni.pbe-spn-kjpaw_psl.1.0.0.UPF  
+
+ATOMIC_POSITIONS crystal
+   Ni 0.0  0.0  0.0
+
+K_POINTS automatic
+   15 15 15   1 1 1
+
+```
+
+Again, change the path to the pseudopotentials directory according to your setting. 
+
+3) Lanuch the simulation by running `sbatch launch_QE.sh`.
+
+4) This calculation will compute a total energy for the unit cell specified, but will not change the unit cell parameters. This is what we call a single point calculation. To optimize the lattice parameters under the chosen theory, you can run several single point calculations with varying unit cell parameters (in our case, changing the value of 'A'), and fit the total energy to the lattice parameter to find the optimal geometry.
 

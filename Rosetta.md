@@ -153,7 +153,7 @@ Launch the simulation by typing `sbatch launch_fixbb.sh` where `launch_fixbb.sh`
 ~/rosetta/main/source/bin/fixbb.static.macosclangrelease @flags_fixbb > output.txt
 
 ```
-
+This excutable is for Mac version. If you are using Linux version, change the excutable to `fixbb.static.linuxgccrelease`.
 
 
 

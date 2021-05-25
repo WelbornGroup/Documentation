@@ -200,6 +200,8 @@ for i in `seq 1 25`; do cd Simulation_${i}; sbatch launch_minimization.sh; cd ..
 
 And similarly for the dynamics once the energy minimization is done. 
 
+This file is detailed
+
 
 
 

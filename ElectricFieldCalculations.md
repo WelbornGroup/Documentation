@@ -14,7 +14,11 @@ module load Anaconda/5.2.0
 module load cmake
 conda create -n tinker_dependencies -c conda-forge numpy pandas texinfo matplotlib
 ```
-You will be prompted to confirm you want to proceed. Press "Y" or type enter. Finally, activate the numpy, panda and texinfo packages with:
+You will be prompted to confirm you want to proceed. Press "Y" or type enter. Different clusters may have their modules name differently, use 
+```
+module avail 
+```
+to check the available modules. Finally, activate the numpy, panda and texinfo packages with:
 
 ```sh
 source activate tinker_dependencies

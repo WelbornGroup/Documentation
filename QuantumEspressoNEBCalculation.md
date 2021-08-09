@@ -1,12 +1,13 @@
 ### Energy barrier calculation with Quantum Espresso
 
-The nudged elastic band (NEB) is the method for finding saddle points and minimum energy paths between two conformations. 
+The nudged elastic band (NEB) is a method for finding saddle points and minimum energy paths between two conformations. 
 
 In the test calculation, we will run NEB calculation on the inversion of NH3 molecule. The geometry of NH3 is from a geometry optimization calculation. In real case scenario, you should complete the geometry optimization calculations of your structures as instructed in previous documents. 
 
 Create a directory `NH3_NEB` for this example calculation. In this directory, create the following files:
 
 `input.in`:
+
 ```sh
 BEGIN
 BEGIN_PATH_INPUT
@@ -72,6 +73,7 @@ END
 ```
 
 `lanch_NEB.sh`:
+
 ```sh
 #! /bin/bash
 #

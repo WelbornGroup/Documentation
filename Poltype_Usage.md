@@ -75,6 +75,13 @@ echo "------- Poltype2 has exited: `date` --------"
 ### Running Poltype
 
 Make a new directory on ARC (`mkdir GAL_Poltype`) 
+
 Copy the four input files to this directory (`cp poltype.ini GAL_Poltype`)
-Move to the directory (`cd GAL_Poltype`) and submit the job to the queue (`sbatch run-poltype.sh`)
+
+Move into the directory (`cd GAL_Poltype`) and submit the job to the queue (`sbatch run-poltype.sh`)
+
+
+
+A successful poltype run will result in an OPEN_ME directory, the minimized structure (`final.xyz`), and the parameters (`final.key`)
+
 

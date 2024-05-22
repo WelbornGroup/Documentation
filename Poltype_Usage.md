@@ -1,8 +1,7 @@
 # This is a Quick Guide to using Poltype2
-### (Please see the Poltype2 install guide first to get it set up on ARC)
+Poltype2 is an automated software that generates AMOEBA MD parameters for small molecules 
 
-
-Poltype2 is an automated software that generates AMOEBA MD parameters for small molecules
+(Please see the Poltype2 install guide first to get it set up on ARC)
 
 To utilize this software you will require 4 input files:
 
@@ -50,7 +49,28 @@ The only change will be the fourth line, where the path should reflect the locat
 
 ### Poltype Job Submission Script
 
-The poltype 
+The `run-poltype.sh` is a bash script to submit the poltype job to the queue on ARC. The only changes should be made to the header for example if you want to submit to another CPU queue or request more time/resources
+
+```
+#!/bin/bash
+#SBATCH -J Poltype2
+#SBATCH -A welbornlab
+#SBATCH -p normal_q
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=64
+#SBATCH --time=3-00:00:00
+
+# Run the example
+echo "-------- Starting Poltype2: `date` -------"
+
+source activate poltype_psi417
+
+source paths.sh
+
+python /projects/welbornlab/Poltype2/master/PoltypeModules/poltype.py
+
+echo "------- Poltype2 has exited: `date` --------"
+```
 
 
 

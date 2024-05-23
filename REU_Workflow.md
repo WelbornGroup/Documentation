@@ -12,10 +12,11 @@ Open the .pdb file in Avogadro, and save the molecule again as a .mol file
 
 Poltype2 is the program we will use to generate the parameters for these carbohydrate molecules
 
-This is the first major step in your project this summer, we will work on getting most of the carbohydrates parameterized first before working on the next steps.
+This is the first major step in your project this summer, we will work on getting most of the carbohydrates parameterized first before working on the following steps.
 
-First you will need to install Poltype2 on ARC, see `[Poltype_Install.md](https://github.com/WelbornGroup/Documentation/blob/REU_update/Poltype_Install.md)
+First you will need to install Poltype2 on ARC, see [Poltype_Install.md](https://github.com/WelbornGroup/Documentation/blob/REU_update/Poltype_Install.md) for directions.
 
+Once installed, see the [Poltype_Usage](https://github.com/WelbornGroup/Documentation/blob/REU_update/Poltype_Usage.md) for instructions on running Poltype2 for a molecule on ARC 
 
 ## Solvation 
 

@@ -2,11 +2,11 @@
 
 ## Create Carbohydrate Structures
 
-Divide up the monosaccharides between each other, just make sure you are not both doing the same structures twice!
+Divide up the monosaccharides between each other, just make sure you both are not doing the same structures twice!
 
 Use the glycam carbohydrate builder to generate the initial carbohydrate structure. Make sure that the stereochemistry and substituent groups are correct for each structure. (double check please) Then save the minimized PDB file. 
 
-Open the .pdb file in Avogadro, and save the molecule again as a .mol file
+Open the `.pdb` file in Avogadro, and save the molecule again as a `.mol` file
 
 ## Poltype
 
@@ -20,7 +20,7 @@ Once installed, see the [Poltype_Usage](https://github.com/WelbornGroup/Document
 
 ## Solvation 
 
-The output of the parameterization will include a 
+These are the next steps we will take after paramterization of the carbohydrate molecules is complete
 
 ## Molecular Dynamics
 

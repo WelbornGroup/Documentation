@@ -32,6 +32,6 @@ Create a new environment and activate that environment to install the necessary 
 
 `conda install -c conda-forge xtb -yes`
 
-This conda env will need its path 
+The path to this conda env will need to be used later, see `Poltype_Usage.md`
 
 

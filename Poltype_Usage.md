@@ -1,6 +1,4 @@
 # This is a Quick Guide to using Poltype2
-Poltype2 is an automated software that generates AMOEBA MD parameters for small molecules 
-
 (Please see the Poltype2 install guide first to get it set up on ARC)
 
 To utilize this software you will require 4 input files:
@@ -16,8 +14,6 @@ To utilize this software you will require 4 input files:
 Generate a structure file for your molecule using Avogadro or glycam's carbohydrate builder
 
 Poltype requires a `.mol` or `.sdf` structure file. 
-
-If using glycam download the minimized carbohydrate `.pdb` file, open it in Avogadro, and save it as a new `.mol` file
 
 ### Ini File
 

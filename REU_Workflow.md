@@ -47,8 +47,33 @@ There will be a new structure file generated (`galactose.xyz_2`) which will be y
 You should download and open this file in VMD to make sure it looks okay with no obvious errors
 
 ## Minimize
+First create a key file named the same as your carbohydrate and parameter files (i.e. `galactose.key`)
 
-Now we will create a script to minimize our solvated carbohydrates
+```
+integrator nose-hoover
+
+a-axis 31.00 
+b-axis 31.00
+c-axis 31.00
+
+neighbor-list
+polar-eps 0.00001
+vdw-cutoff 12.0
+vdw-correction
+
+ewald
+ewald-cutoff 7.0
+
+polar-predict
+polarization mutual
+
+verbose
+```
+This key file houses the settings for our dynamics simulation such as the box dimensions, integrator, barostat, thermostat, etc.
+This keyfile will be universal for all the carbohydrates we will do, but you can look up some of the settings and their meanings in the tinker handbook
+
+
+Next we will create a script to minimize our solvated carbohydrates
 
 In the same directory before, create a file `minimization.sh` which will have the following contents:
 ```

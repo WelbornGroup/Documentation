@@ -51,9 +51,31 @@ You should download and open this file in VMD to make sure it looks okay with no
 Now we will create a script to minimize our solvated carbohydrates
 
 In the same directory before, create a file `minimization.sh` which will have the following contents:
+```
+#!/bin/bash
+#SBATCH --account=welbornlab
+#SBATCH --partition=v100_normal_q
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:1
+#SBATCH --time=0-00:05:00
 
+# Each node type has different modules avilable. Resetting makes the appropriate stack available
+module reset
+module load infer-skylake_v100/tinker9/1.4.0-nvhpc-21.11
 
+# Run the example
+echo "-------- Starting tinker9 minimization: `date` -------"
 
+tinker9 minimize galactose.xyz_2 0.1 > min.log
+
+echo "------- tinker9 minimization has exited: `date` --------"
+```
+
+Make sure to change the structure file name between molecules, and that you are referencing the solvated molecule (.xyz_2) and not the original (.xyz)
+
+`sbatch minimization.sh` to submit the job to the queue 
+
+Once finished check the min.log file to see if the minimization was completed successfully, and look for the resulting minimized structure file (`galactose.xyz_3`) 
 
 ## Molecular Dynamics
 

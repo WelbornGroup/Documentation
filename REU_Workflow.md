@@ -20,7 +20,40 @@ Once installed, see the [Poltype_Usage](https://github.com/WelbornGroup/Document
 
 ## Solvation 
 
-These are the next steps we will take after paramterization of the carbohydrate molecules is complete
+Now we will use Tinker to solvate the carbohydrate molecules 
+
+Copy the `final.xyz` from the poltype result into a new directory and rename the file (i.e. galactose.xyz)
+
+Combine the resulting parameters in `final.key` with `amoebabio18.prm` naming it the same as the structure (i.e. galactose.prm) and place this new paramter file in the same directory
+
+Copy the pre-made water box located in `projects/welborn/Newman/Path` to the directory 
+
+This example will use the Tinker8 executables located `/projects/welbornlab/Poltype2/TinkerEx`
+(You can copy the TinkerEx directory to your own space and use them from there if you would like)
+
+Now in your directory, open a terminal and run `/projects/welbornlab/Poltype2/TinkerEx/xyzedit galactose.xyz`
+
+You should see the pop-up menu for xyzedit, read through the various ways this code can be used to manipulate your structure file.
+
+Select `(13) Translate Center of Mass to the Origin` by typing 13 and hitting enter
+This translates our carbohydrate to the origin, (centering it on x=0,y=0,z=0) and it is good practice to center your structures before carrying out other manipulations
+
+Next select `(24) Soak Current Molecule in Box of Solvent`
+
+This will prompt you for your solvent box name `waterbox.xyz`
+
+There will be a new structure file generated (`galactose.xyz_2`) which will be your centered carbohydrate in the minimized waterbox
+
+You should download and open this file in VMD to make sure it looks okay with no obvious errors
+
+## Minimize
+
+Now we will create a script to minimize our solvated carbohydrates
+
+In the same directory before, create a file `minimization.sh` which will have the following contents:
+
+
+
 
 ## Molecular Dynamics
 

@@ -139,7 +139,15 @@ This is running a dynamics simulation using Tinker 9 the settings are the follow
 - 300.0 is the degrees in Kelvin
 - 1.0 is the pressure in atm
 
-We will keep all of these setting consistent for the carbohydrates, however make sure you are referencing your carbohydrate structure file correctly (*i.e. galactose.xyz_4 >> example-carbohydrate.xyz_4*)
+We will keep all of these setting consistent for the carbohydrates, however make sure you are referencing your carbohydrate structure file correctly (*i.e. change galactose.xyz_4 >> example-carbohydrate.xyz_4*)
+
+Make sure your structure file, key file, and parameter files all have the same names (galactose.xyz_4, galactose.key, galactose.prm)
+
+`sbatch dynamic.sh` to submit the dynamics job to the queue 
+
+Check the dynamics.log file to see the progress of your simulation and when it is completed the `.arc` file will contain the trajectory of the system
+
+Next we will load this trajectory file into VMD and analyze our simulation!
 
 ## Analysis with VMD
 

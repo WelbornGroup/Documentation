@@ -26,7 +26,7 @@ Copy the `final.xyz` from the poltype result into a new directory and rename the
 
 Combine the resulting parameters in `final.key` with `amoebabio18.prm` naming it the same as the structure (i.e. galactose.prm) and place this new paramter file in the same directory
 
-Copy the pre-made water box located in `projects/welborn/Newman/Path` to the directory 
+Copy the pre-made water box `projects/welborn/Newman/Solvate/waterbox.xyz` to your directory 
 
 This example will use the Tinker8 executables located `/projects/welbornlab/Poltype2/TinkerEx`
 (You can copy the TinkerEx directory to your own space and use them from there if you would like)

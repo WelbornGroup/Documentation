@@ -47,7 +47,7 @@ There will be a new structure file generated (`galactose.xyz_2`) which will be y
 You should download and open this file in VMD to make sure it looks okay with no obvious errors
 
 ## Minimize
-First create a key file named the same as your carbohydrate and parameter files (i.e. `galactose.key`)
+First create a key file with the same name as your carbohydrate and parameter files (i.e. `galactose.key`)
 
 ```
 integrator nose-hoover
@@ -141,7 +141,7 @@ This is running a dynamics simulation using Tinker 9 the settings are the follow
 
 We will keep all of these setting consistent for the carbohydrates, however make sure you are referencing your carbohydrate structure file correctly (*i.e. change galactose.xyz_4 >> example-carbohydrate.xyz_4*)
 
-Make sure your structure file, key file, and parameter files all have the same names (galactose.xyz_4, galactose.key, galactose.prm)
+Make sure your structure file, key file, and parameter files all have the same names (galactose.xyz_4, galactose.key, galactose.prm) otherwise tinker will not be able to locate your parameters or settings
 
 `sbatch dynamic.sh` to submit the dynamics job to the queue 
 

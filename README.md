@@ -9,13 +9,15 @@ An older workflow for simulating proteins is [here](previous_workflow.md) and si
 
 Note that not all of the documentation is linked through the workflows.
 
+
+## Introduction
+This tutorial will go through the process of preparing a protein system for a molecular dynamics (MD) simulation using the Tinker MD engine. This is a general overview and can be adapted to fit your needs and specific systems. The galectin-3 protein will be used as an example throughout this tutorial. There will always be multiple ways to accomplish some steps and these will be mentioned when possible! 
+
 Workflow:
 Protein Prep
 Rosetta (optional)
 Solvation
 
-## Introduction
-This tutorial will go through the process of preparing a protein system for a molecular dynamics (MD) simulation using the Tinker MD engine. This is a general overview and can be adapted to fit your needs and specific systems. The galectin-3 protein will be used as an example throughout this tutorial. There will always be multiple ways to accomplish some steps and these will be mentioned when possible! 
 
  ## Protein File
 To start, head over the [RSCB Protein Data Bank](https://www.rcsb.org) to find the protein of interest. Search for the protein by name (galectin-3) or better by its unique PDB ID (1KJL). 

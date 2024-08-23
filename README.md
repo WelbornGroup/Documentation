@@ -4,7 +4,7 @@ This is where we keep general documentation for the tasks and software used in t
 
 
 Below you will find a general tutorial and walkthrough on preparing a protein system for Tinker MD simulations.
-(An older workflow for simulating proteins is [here](previous_workflow.md) and simple carbohydrates [here](../REU_Workflow.md))
+(An older workflow for simulating proteins is [here](previous_workflow.md) and simple carbohydrates [here](REU_Workflow.md))
 
 
 

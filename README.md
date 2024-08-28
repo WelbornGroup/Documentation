@@ -15,11 +15,13 @@ The workflow below will go through the process of preparing a protein system for
 
 Workflow:
 
-Obtain and prepare your protein structure file. [Protein_Prep.md](./Protein_Prep.md)
+Obtain and prepare your protein structure file. [Protein_Prep](./Protein_Prep.md)
 
-[Optional] Use Rosetta to create multiple starting conformations of your protein. [Rosetta.md](./Rosetta.md)
+[Optional] Use Rosetta to create multiple starting conformations of your protein. [Rosetta](./Rosetta.md)
 
-Solvate your protein system and convert to Tinker XYZ format. [SolvateProtein.md](./SolvateProtein.md)
+Solvate your protein system with Gromacs. (Best for proteins with internal cavities that need hydration) [SolvateProtein](./SolvateProtein.md)
+OR
+Solvate your system with Tinker. (Best for small molecules and files already in .txyz format) [SolvateTinker](./SolvateTinker.md)
 
 Run the dynamics simulation with Tinker9. 
 

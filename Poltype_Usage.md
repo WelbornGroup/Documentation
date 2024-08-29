@@ -1,5 +1,5 @@
 # This is a Quick Guide to using Poltype2
-(Please see the Poltype2 install guide first to get it set up on ARC)
+(Please see the Poltype2 [install guide](./Poltype_Install.md) first to get it set up)
 
 To utilize this software you will require 4 input files:
 

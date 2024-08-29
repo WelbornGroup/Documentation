@@ -2,6 +2,8 @@
 
 To get started you will need to download [Anaconda](https://www.anaconda.com/download#) (Linux Distribution) to your home directory on ARC
 
+(The anaconda on ARC from module load is out of date and your own local install of Anaconda allows for more flexibility, however the module load conda can still work) 
+
 - To dowload it to your working directory use `wget "link"` using the link to the anaconda install 
 
 - Use `chmod +x` to make the install script executable, run the install script

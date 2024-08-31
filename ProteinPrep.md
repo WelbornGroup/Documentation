@@ -21,12 +21,22 @@ You can **clean the protein** file in multiple ways:
 
 ### Add Hydrogens
 
-Most pdb files will need polar hydrogens added. This can be done in software like ChimeraX, however our group uses the 'Reduce' program to try and predict which residues should be protonated. Histidine 
+Most pdb files will need polar hydrogens added. This can be done in software like ChimeraX, however our group uses the '[reduce](https://github.com/rlabduke/reduce/blob/master/README.md)' program from the Richardson lab for predicting protonation states. There is also a [reduce2](https://github.com/cctbx/cctbx_project/tree/master/mmtbx/reduce) out now which may be better to start with since it will continue to have support, however it needs to be installed as part of the [cctbx](https://github.com/cctbx/cctbx_project/tree/master) package. 
 
+Download a version of reduce, open a terminal, and change to the directory where your pdb file is located.
 
+'''
+reduce -build input.pdb > output.pdb
+'''
 
+This command may be slightly different using the reduce2 version. The build argument is to make sure the Histdines are correctly protonated.
 
-
+Open the output.pdb and you should see new lines corresponding to the hydrogens atoms that were added. Note however that these atoms are not numbered sequentially. It is good practice to open the file in VMD (or similar software) to CHECK the structure and save it again as a pdb. This will also fix the numbering issue. Always check your pdb files in VMD and in text editors to make sure problems are found early in the process.
 
 ### Structure Modification
 If the protein is missing residues you can add them using software like ([Modeller](AddMissingResidues.md)). Tinker also has an amino acid builder under the 'protein' command. If a structured domain needs to be built then homology modelling like Swiss-Model or AlphaFold can be useful.
+
+
+Next step will be solvating the protein and converting to a tinker xyz file!
+
+

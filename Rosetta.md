@@ -1,4 +1,6 @@
-#Generating a conformational ensemble with the Rosetta Software Package
+# Generating a conformational ensemble with the Rosetta Software Package
+
+This optional step in the workflow is for generating multiple protein conformations. This is to help with sampling of larger systems by starting multiple dynamic simulations in tandem with different conformers, as opposed to a longer continuous MD simulation on one conformation. This step will work with the cleaned and protonated pdb file from the previous steps.
 
 ### Download and install the software
 
@@ -6,11 +8,11 @@ Follow the instructions [here](https://www.rosettacommons.org/software/license-a
 
 ### Generate a parameter file for the ligand (if applicable)
 
-If a ligand (or other small molecule) is complexed with the protein, you will need a specific parameter file for Rosetta. 
+If a ligand (or other small molecule) is complexed with the protein, you will need a specific file for it in Rosetta. 
 
-1) Start by renaming the ligand atoms in your PDB file (necessary when converting to .mol). In order of appearance, name carbons C1 through CX, hydrogens H1 though HY, ... where X and Y is the total number of carbons and hydrogens, respectively. This also ensures that all ligand atoms are uniquely named, which you will likely need when derving force field parameters for Tinker. It is also good practice to draw the ligand structure with corresponding atom names to know what they are. 
+1) Start by renaming the ligand atoms in your PDB file (necessary when converting to .mol). In order of appearance, name carbons C1 through CX, hydrogens H1 though HY, ... where X and Y is the total number of carbons and hydrogens, respectively. This also ensures that all ligand atoms are uniquely named, which you will likely need when converting to a tinker xyz format later. It is also good practice to draw the ligand structure with corresponding atom names. 
 
-2) Convert the renamed PDB file into a `.mol` file. This can be done with [OpenBabel](http://openbabel.org/wiki/Main_Page) or opening the PDB in [Avogadro](https://avogadro.cc/) and saving it as `.mol` file. Note that VMD for example does not support this format (do not use `.mol2`). 
+2) Convert the renamed PDB file into a `.mol` file. This can be done with [OpenBabel](http://openbabel.org/wiki/Main_Page) or opening the PDB in [Avogadro](https://avogadro.cc/) and saving it as `.mol` file.(Note that VMD for example does not support this format, and do not use `.mol2` file format). 
 
 3) Use the Python script from the Rosetta package to create the parameter file from the `.mol` file by typing:
 

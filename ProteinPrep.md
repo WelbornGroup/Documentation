@@ -17,7 +17,7 @@ You can **clean the protein** file in multiple ways:
 
 2. Alternatively, open the `.pdb` file in a text editor and manually delete the unwanted atom lines from the file. This is a more hands-on approach but will allow you to familiarize yourself with the internal structure of these file types. The top of the PDB contain a header with information about the protein. You can remove this portion for the working file after you have read through the important sections. The `ATOM` lines signify the start of the actual protein structure. Normally the protein atoms will be listed first, followed by the water and other extraneous molecules. The file will sometimes end with a connectivity section, especially for the non-protein molecules. You will want to keep the proper 'ATOM' lines and the 'END' line for your cleaned protein. You can load the pdb file into VMD and save it again to reformat it nicely when you are done.
 
-
+Save the new stripped pdb under a new name like ```ikjl_clean.pdb```
 
 ### Add Hydrogens
 
@@ -26,7 +26,7 @@ Most pdb files will need polar hydrogens added. This can be done in software lik
 Download a version of reduce, open a terminal, and change to the directory where your pdb file is located.
 
 ```
-reduce -build input.pdb > output.pdb
+reduce -build 1kjl_clean.pdb > 1kjl_prot.pdb
 ```
 
 This command may be slightly different using the reduce2 version. The build argument is to make sure the Histdines are correctly protonated.

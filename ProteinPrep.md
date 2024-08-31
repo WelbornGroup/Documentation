@@ -25,9 +25,9 @@ Most pdb files will need polar hydrogens added. This can be done in software lik
 
 Download a version of reduce, open a terminal, and change to the directory where your pdb file is located.
 
-'''
+```
 reduce -build input.pdb > output.pdb
-'''
+```
 
 This command may be slightly different using the reduce2 version. The build argument is to make sure the Histdines are correctly protonated.
 

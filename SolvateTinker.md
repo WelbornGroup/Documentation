@@ -155,7 +155,7 @@ To answer this prompt you can use tinker's range syntax, if your protein has 223
 
 Next prompt will be *Enter Ion Atom Type Number & Copies to Add :*
 
-Input should look like `352 29` to add 29 Na+ ions to the system, resulting in the protein_filename.xyz_3
+Input should look like `352 29` to add 29 Sodium (Na+) ions to the system, resulting in the protein_filename.xyz_3
 
 Repeat this process now to add chloride ions:
 
@@ -163,7 +163,7 @@ Repeat this process now to add chloride ions:
 
 Solute range now needs to include the new ions! `-1 2230 -51005 51033`
 
-And the atom type will be different for Chloride `363 33`
+And the atom type will be different for Chloride (Cl-) `363 33`
 
 With that you can pull up the final protein_filename.xyz_4 in VMD to visually check the box! Perhaps duplicate and rename this file to `protein_solv.xyz`
 

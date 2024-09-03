@@ -42,7 +42,7 @@ Save the new pdb separate under a name like ```ikjl_clean.pdb```
 
 ### Add Hydrogens
 
-Most pdb files will need polar hydrogens added. This can be done in software like ChimeraX, however our group uses the '[reduce](https://github.com/rlabduke/reduce/blob/master/README.md)' program from the Richardson lab for predicting protonation states. There is also a [reduce2](https://github.com/cctbx/cctbx_project/tree/master/mmtbx/reduce) out now which will continue to have support, however it needs to be installed as part of the [cctbx](https://github.com/cctbx/cctbx_project/tree/master) package. 
+Most pdb files will need polar hydrogens added. This can be done in software like ChimeraX, however our group uses the '[reduce](https://github.com/rlabduke/reduce/blob/master/README.md)' program from the Richardson lab for predicting protonation states. There is also a [reduce2](https://github.com/cctbx/cctbx_project/tree/master/mmtbx/reduce) out now which will continue to have support, however it needs to be installed as part of the [cctbx](https://github.com/cctbx/cctbx_project/tree/master) package. The commands may be slightly different using the reduce2 version. 
 
 Download a version of reduce, open a terminal, and change to the directory where your pdb file is located.
 
@@ -50,14 +50,16 @@ Download a version of reduce, open a terminal, and change to the directory where
 reduce -build 1kjl_clean.pdb > 1kjl_prot.pdb
 ```
 
-The build argument is to make sure the Histdines are correctly protonated. This command may be slightly different using the reduce2 version, and you may need to specify the path to the reduce executable. 
+The build argument is to make sure the histidines are correctly protonated. The histidines are the most important to pay attention to during the protonation step and will decide the overall charge of your protein, along with your charged residues (Arg, Lys, Asp, Glu). 
 
 Open the output.pdb and you should see new lines corresponding to the hydrogens atoms that were added. Note however that these atoms are not numbered sequentially. It is good practice to open the file in VMD (or similar software) to CHECK the structure and save it again as a pdb. This will also fix the numbering issue. ***Always check your pdb files regularly in both VMD and text editors to make sure problems are found early in the process.***
+
+You will want to keep an eye on the total number of atoms in your protein system at this point, record it, and keep track of it in the following steps (solvation & tinker xyz conversion). Sometimes the number of atoms can change during these steps due to protonation changes and you will want to know when this happens.
+
 
 ### Structure Modification
 If the protein is missing residues you can add them using software like ([Modeller](AddMissingResidues.md)). Tinker also has an amino acid builder under the 'protein' command. If a structured domain needs to be built then homology modelling like Swiss-Model or AlphaFold can be useful.
 
 
-Next step will be solvating the protein and converting to a tinker xyz file!
 
 

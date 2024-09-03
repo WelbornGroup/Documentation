@@ -34,7 +34,7 @@ ATOM   1135  CD1 ILE A 250       8.149  15.133 -14.690  1.00 26.48           C
 END                                                                             
 ```
 
-
+Note the protein should have 1135 atoms once cleaned, for our galectin-3 example.
 
 Save the new pdb separate under a name like ```ikjl_clean.pdb```
 
@@ -52,7 +52,9 @@ reduce -build 1kjl_clean.pdb > 1kjl_prot.pdb
 
 The build argument is to make sure the histidines are correctly protonated. The histidines are the most important to pay attention to during the protonation step and will decide the overall charge of your protein, along with your charged residues (Arg, Lys, Asp, Glu). 
 
-Open the output.pdb and you should see new lines corresponding to the hydrogens atoms that were added. Note however that these atoms are not numbered sequentially. It is good practice to open the file in VMD (or similar software) to CHECK the structure and save it again as a pdb. This will also fix the numbering issue. ***Always check your pdb files regularly in both VMD and text editors to make sure problems are found early in the process.***
+Open the output.pdb and you should see new lines corresponding to the hydrogens atoms that were added. Note however that these atoms are not numbered sequentially. It is good practice to open the file in VMD (or similar software) to CHECK the structure and save it again as ```1kjl_complete.pdb```, this will also fix the numbering issue. ***Always check your pdb files regularly in both VMD and text editors to make sure problems are found early in the process.***
+
+Note that our galectin-3 protein now has 2289 atoms.
 
 You will want to keep an eye on the total number of atoms in your protein system at this point, record it, and keep track of it in the following steps (solvation & tinker xyz conversion). Sometimes the number of atoms can change during these steps due to protonation changes and you will want to know when this happens.
 

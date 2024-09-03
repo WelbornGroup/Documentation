@@ -19,7 +19,7 @@ From our 1kjl galectin-3 example we can look at the pacmol output we see that we
 Alternatively, you can make it simple and make all of the histidines a single protonation state by changing all HIS to HIE.
 
 You can accomplish this with find and replace in a text editor, or an example with terminal is:
-`sed 's/HIS/HIE/g' 1kjl_complete.pdb > 1kjl_prep1.pdb`
+```sed 's/HIS/HIE/g' 1kjl_complete.pdb > 1kjl_prep1.pdb```
 
 If there is a histidine in an active site or one that is positively charged you may not want to take the all HIE approach.
 

@@ -15,7 +15,7 @@ The protein file will usually include crytallography artifacts such as water, io
 You can **clean the protein** file in multiple ways:
 1. Open the `.pdb` file in a software such as ChimeraX. Here you can use the selection tools to specify the unwanted molecules and remove them. This is a beginner friendly way to clean a file and is the most intuitive since you can visualize what is being removed.
 
-2. Alternatively, open the `.pdb` file in a text editor and manually delete the unwanted atom lines from the file. This is a more hands-on approach but will allow you to familiarize yourself with the internal structure of these file types. The top of the PDB contain a header with information about the protein. You can remove this portion for the working file after you have read through the important sections. The `ATOM` lines signify the start of the actual protein structure. 
+2. Alternatively, open the `.pdb` file in a text editor and manually delete the unwanted atom lines from the file. This is a more hands-on approach but will allow you to familiarize yourself with the internal structure of these file types. The top of the PDB contain a header with information about the protein. You can remove this portion for the working file after you have read through the important sections. The `ATOM` lines signify the start of the actual protein structure. Normally the protein atoms will be listed first, followed by the water and other extraneous molecules. The file will sometimes end with a connectivity section, especially for the non-protein molecules. You will want to keep the proper 'ATOM' lines and the 'END' line for your cleaned protein, while removing the rest. You can load the pdb file into VMD to check and save it again to renumber it if needed. It is good practice to save new files when changes are made, this will allow you to compare the files to see the specific chagnes and have a backup to revert to if needed.
 
 
 ```
@@ -25,10 +25,16 @@ ATOM      3  C   PRO A 113      23.547  -4.400  -8.112  1.00 29.57           C
 ATOM      4  O   PRO A 113      24.520  -4.262  -7.348  1.00 30.41           O  
 ATOM      5  CB  PRO A 113      23.669  -6.314  -9.512  1.00 31.16           C  
 ...
+ATOM   1130  C   ILE A 250      10.599  18.442 -13.748  1.00 26.64           C  
+ATOM   1131  O   ILE A 250      10.593  19.149 -12.722  1.00 26.31           O  
+ATOM   1132  CB  ILE A 250      10.536  16.065 -14.493  1.00 25.19           C  
+ATOM   1133  CG1 ILE A 250       9.183  15.838 -13.813  1.00 25.15           C  
+ATOM   1134  CG2 ILE A 250      11.338  14.758 -14.571  1.00 25.43           C  
+ATOM   1135  CD1 ILE A 250       8.149  15.133 -14.690  1.00 26.48           C  
+END                                                                             
 ```
 
 
-Normally the protein atoms will be listed first, followed by the water and other extraneous molecules. The file will sometimes end with a connectivity section, especially for the non-protein molecules. You will want to keep the proper 'ATOM' lines and the 'END' line for your cleaned protein, while removing the rest. You can load the pdb file into VMD to check and save it again to renumber it if needed. It is good practice to save new files when changes are made, this will allow you to compare the files to see the specific chagnes and have a backup to revert to if needed.
 
 Save the new pdb separate under a name like ```ikjl_clean.pdb```
 

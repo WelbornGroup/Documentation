@@ -90,7 +90,84 @@ We also get a nice measurement of the protein dimensions.You can manually go int
 
 For the galectin-3 system I use an 80x80x80 box, which is slightly overestimating the box size but you want to make sure that the protein is never interacting with its mirror images across periodic boundaries. ***This is especially tricky for flexible molecules!*** The downside to a larger volume box be the longer simulation time that is required. 
 
-### 
+### Make a waterbox
+
+Make a file named `water.xyz` in your directory with your protein file and amoeba parameters
+```
+     3
+     1  O     -0.054822    0.026553   -0.013027   349     2     3
+     2  H      0.199460   -0.864828   -0.246637   350     1
+     3  H      0.670683    0.443372    0.453400   350     1
+```
+
+We will use this single water to populate our waterbox with many waters. First we need to calculate the number of waters to add for a specific volume based on the density of water 1000 kg/m^3. An example of this calculation is done on page 21 of this [tinker tutorial](https://tinker-hp.org/wp-content/uploads/2022/10/Tinker_preparation_tutorial.pdf).
+
+For our 80x80x80 box we will need 17,129 water molecules. 
+
+
+Now in your directory with your tinker xyz protein file, open a terminal and run `/Tinker/xyzedit water.xyz` and name the parameter file when prompted `amoebabio18.prm`
+
+You should see the pop-up menu for xyzedit, read through the various ways this tool can be used to manipulate your structure file. (Note: different versions of tinker may have different numbering for the commands in xyzedit)
+
+Select `(24) Create and Fill a Periodic Boundary Box`
+
+`17129` when prompted for the number of copies
+
+`80,80,80` to indicate the box size
+
+`Y` to refine the box and minimize the waters
+
+`amoebabio18.prm` provide the parameters once more for the minimization
+
+This will result in a water.xyz_2 file which can be renamed to waterbox.xyz or waterbox_80.xyz for future use. This box can also be trimmed down using xyzedit if a smaller box is needed later. 
+
+To check that the calculations were correct we could use `/Tinker/analyze waterbox.xyz`  and select `General System and Force Field Information [G]`
+
+*The system density should be close to 1* 
+
+
+### Insert Protein
+
+Now in your directory with your tinker xyz protein file, open a terminal and run `/Tinker/xyzedit protein_filename.xyz`
+
+Select `(13) Translate Center of Mass to the Origin`
+
+This translates our carbohydrate to the origin, (centering it on x=0,y=0,z=0) and it is good practice to center your structures before carrying out other manipulations
+
+Next select `(24) Soak Current Molecule in Box of Solvent`
+
+This will prompt you for your solvent box name: waterbox.xyz
+
+There will be a new structure file generated (protein_filename.xyz_2) which will be your centered carbohydrate in the minimized waterbox
+
+You should download and open this file in VMD to make sure it looks okay with no obvious errors
+
+
+### Adding Ions
+
+To add ions `/Tinker/xyzedit protein_filename.xyz_2` then `(26) Place Monoatomic Ions around a Solute`
+
+This will prompt you with  *Enter Atom Numbers in Solute Molecules :*
+
+This is looking for any atom lines that are NOT water. This includes your protein, ligand, and other ions!
+
+To answer this prompt you can use tinker's range syntax, if your protein has 2230 atoms then you can input `-1 2230`
+
+Next prompt will be *Enter Ion Atom Type Number & Copies to Add :*
+
+Input should look like `352 29` to add 29 Na+ ions to the system, resulting in the protein_filename.xyz_3
+
+Repeat this process now to add chloride ions:
+
+`/Tinker/xyzedit protein_filename.xyz_3` then `(26) Place Monoatomic Ions around a Solute`
+
+Solute range now needs to include the new ions! `-1 2230 -51005 51033`
+
+And the atom type will be different for Chloride `363 33`
+
+With that you can pull up the final protein_filename.xyz_4 in VMD to visually check the box! Perhaps duplicate and rename this file to `protein_solv.xyz`
+
+
 
 
 

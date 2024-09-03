@@ -1,26 +1,38 @@
 
 
-# Convert PDB to Tinker XYZ
+### PDB to Tinker XYZ
 
-The [Tinker software](https://dasher.wustl.edu/tinker/) reads input files with extension `.xyz` that are formatted differently from conventional XYZ files. 
+If solvating in Tinker, the first step will be converting your PDB to a tinker xyz file
 
-For a quick overview of how Tinker works and what are Tinker XYZ files, please refer to [Tinker Explained](http://chembytes.wikidot.com/tinker-s-wiki) and [Workshop Exercise](https://sites.google.com/site/amoebaworkshop/exercise-1#TOC-Restarting-a-simulation).
+If you have already solvated your system using gromacs (protein + water + ions), or have a ligand present, there will be a few extra steps to consider 
 
-The below assumes that you have Tinker downloaded and installed on Cascades (binaries available) as well as a complete PDB file of your single protein chain in water (no residue is missing, there are protons and water + ions surround the protein and complexed ligand, filling a box of appropriate dimension). 
+First download a set of tinker [executables](https://dasher.wustl.edu/tinker/) - linux version if you are carrying out the solvation on ARC, or a set of mac executables if carrying these steps out on your local macbook. Also download the amoebabio18.prm file, which contains parameters to simulate canonical proteins in AMOEBA. 
 
-Adding water and ions to the system was probably your last step so your starting PDB here will be the output of Gromacs solvate (see `SolvateProtein.md`).
+For a quick overview of how Tinker works and what Tinker XYZ files are, you can look at these external tutorials:[Tinker Preparation](https://tinker-hp.org/wp-content/uploads/2022/10/Tinker_preparation_tutorial.pdf) and [Tinker Explained](http://chembytes.wikidot.com/tinker-s-wiki)
 
 
-###Edit the PDB file
-1) Change the name of histidine residues from HIS to HIE so that the protonation state remains when converting to Tinker XYZ. In vim you can do it easily by typing:
-`:%s/HIS/HIE/g`
+### Prepare the PDB file
+1) Change the name of histidine residues from HIS to HIE *or* HID if necessary, so that the protonation state remains when converting to Tinker XYZ. These labels state whether the histidine is protonated in the epsilon or delta position, and the HIS stands for the doubly protonated state where the histidine is positively charged.
 
-2) Rename the water "residues" as `HOH` rather than the default Gromacs `SOL`. You can also do this in vim by typing `:%s/SOL/HOH/g`
+From our 1kjl galectin-3 example we saw in the pacmol output that we have 4 histidines that are contributing no charge, therefore they are all in HIE or HID states. You can look back at the output from the reduce program to see which of the hydrogens is present to determine which state that HIS should be changed to. It may be easier to open the 1kjl_complete.pdb or tinker xyz file of your protein in VMD and visually assess which state each histidine is in. The selection `all resname HIS` should select the residues for you. You will see that the four histidines in our system, from lower to higher index, are in states HID HIE HIE HID.
+
+Alternatively, you can make it simple and make all of the histidine a single protonation state by changing all HIS to HIE.
+
+You can accomplish this with find and replace in a text editor, or an example with terminal is:
+`sed 's/HIS/HIE/g' 1kjl_complete.pdb > 1kjl_prep1.pdb`
+
+2) If coming from gromacs solvate, rename the water "residues" as `HOH` rather than the default Gromacs `SOL`. You can also do this in vim by typing `sed 's/HIS/HIE/g' 1kjl_prep1.pdb > 1kjl_prep2.pdb` 
 
 3) If a ligand (or any complexed small molecule) is present, make sure it is at the end of the file. In general, it will be included after the protein coordinates and will need to be cut and paste after the water+ions. Open the PDB in VMD and save it again to update the atom numbering (check the result by making sure the ligand atoms appear at the end with its atom numbers in sequential order). 
 
-###Convert to Tinker XYZ
-1) Use the pdbxyz tool by typing `~/Tinker/pdbxyz filename.pdb `. This will create the file `filename.xyz` where all atoms from the pdb were converted to Tinker XYZ and assigned `0` as atom type. CHECK (please) that you indeed have the same number of atoms as in the PDB. 
+
+
+### Convert to Tinker XYZ
+1) Use the pdbxyz tool by typing the following command in terminal: `~/Tinker/pdbxyz filename.pdb`
+
+  It will prompt you for a parameter file, type `amoebabio18.prm` (you should have it in your working directory alongside the PDB) and hit enter
+
+This will create the file `filename.xyz` where all atoms from the pdb were converted to Tinker XYZ and assigned atom types that are probably not all correct. CHECK (please) that you indeed have the same number of atoms as in the PDB. 
 
 2) Make a copy of the pdb file `filename.pdb` and change `ATOM` for `HETATM` for the water, ions and ligand atoms. Do this by typing:
 
@@ -59,3 +71,10 @@ and can be used on `ligand.xyz` as follows `./atomtype.sh ligand.xyz ligand_atom
 5) Add the ligand coordinates at the end of `filename_hetatm.xyz` for a Tinker XYZ file that contains ALL atoms. This can be done by typing `cat filename_hetatm.xyz ligand_atomtype.xyz >> Final_input.xyz` making sure to delete any blank likes (if there are any) between the two files. 
 
 6) Update the total number of atoms on the first line (to include the ligand atoms) and CHECK that your `Final_input.xyz` file has (i) an atom type assigned to all atoms (ii) the correct number of atoms. 
+
+
+
+
+
+
+

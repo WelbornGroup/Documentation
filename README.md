@@ -34,9 +34,9 @@ Workflow:
 
  
      
-**5.** Run the dynamics simulation with Tinker9. 
+**5.** Run the dynamics simulation with Tinker9. [RunningTinkerBasics](./RunningTinkerBasics.md)
 
-**6.** [Optional] Tinker analysis and helpful tools.
+**6.** [Optional] Tinker analysis and helpful tools. Under development
 
 
 

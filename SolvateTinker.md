@@ -22,7 +22,7 @@ Note that it may be a good idea to move the binaries from the `Downloads` folder
 
 This should return the total structure charge and other information:
 
-```sh
+```
   ###########################################################################
  solvate.tcl script: Solvates a (protein) structure with water and ions,
                      using Packmol. 
@@ -58,7 +58,7 @@ This should return the total structure charge and other information:
 Type 'y' and hit enter for any hydrogens it cannot identify
 
 
-```sh
+```
  -------------------------------------------------------
   Molar mass of structure: 16772.934399999976
  -------------------------------------------------------

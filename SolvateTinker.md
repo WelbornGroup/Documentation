@@ -6,7 +6,7 @@ This is the alternative method to using the gromacs solvate to create your water
 
 If you have a pdb file of your protein handy, we will still use pacmol to get some general information about our system that will be useful for the solvation protocol. Otherwise you will need to figure out the size of the box needed, and charge of your protein manually. 
 
-### pacmol
+### Pacmol - system charge and box size
 The charge of the protein is computed by adding the charge of all residues. Only HIS, ARG, LYS, GLU and ASP are charged so the problem is equivalent to counting how many of these residues you have in your protein. 
 
 There is a very simple tool to help you do that, which you can download with the [Packmol software](http://m3g.iqm.unicamp.br/packmol/download.shtml). Once you have downloaded the binaries, look for the executable `solvate.tcl`
@@ -23,7 +23,7 @@ Note that it may be a good idea to move the binaries from the `Downloads` folder
 This should return the total structure charge and other information:
 
 ```sh
- ###########################################################################
+  ###########################################################################
  solvate.tcl script: Solvates a (protein) structure with water and ions,
                      using Packmol. 
  ###########################################################################
@@ -43,7 +43,7 @@ This should return the total structure charge and other information:
   z: 68.236 
  -------------------------------------------------------
  -------------------------------------------------------
-  HIS = 4 (associated charge = 0) 
+  HIS = 0 (associated charge = 0) 
   ARG = 9 (associated charge = +9) 
   LYS = 8 (associated charge = +8) 
   GLU = 6 (associated charge = -6) 
@@ -52,18 +52,19 @@ This should return the total structure charge and other information:
   Total structure charge = 4
  -------------------------------------------------------
  Unsure about mass of element HG3: 1.00800. Is this correct? (y/n)
-
 ```
 
-Note that you obtain additional information from the routine that you may find useful, such as
+
+Type 'y' and hit enter for any hydrogens it cannot identify
+
 
 ```sh
  -------------------------------------------------------
-  Molar mass of structure: 17224.708600000013
+  Molar mass of structure: 16772.934399999976
  -------------------------------------------------------
-  Number of water molecules to be put:   10991 
+  Number of water molecules to be put:   11016 
   Total volume: 357233.75 A^3
-  Volume occupied by water: 328622.34 A^3 
+  Volume occupied by water: 329372.54 A^3 
   Number of Sodium ions to be put: 28
   Number of Chloride ions to be put: 32
   Wrote packmol input. 
@@ -82,8 +83,12 @@ Note that you obtain additional information from the routine that you may find u
 
 We use packmol for the charge information, number of ions to add, and to get a box size estimate. 
 
-You can manually go into VMD to measure your system size as well. We will need to know how big the protein is to make our solvation box for the next step. A good rule of thumb is to give your protein about 10 angstroms buffer space between each of the sides of the box. I will usually round up the largest side that pacmol recommends and use that for all sides of my box. For the galectin-3 system I use an 80x80x80 box, which is slightly overestimating the box size but you want to make sure that the protein is never interacting with its mirror images across periodic boundaries. The downside is that a larger volume is going to require longer simulation times so it is a balance. 
+Our system has a positive charge of 4 meaning to neutralize it we will need to add 4 negative ions, probably chloride ions. 
 
+We also get a nice measurement of the protein dimensions.You can manually go into VMD to measure your system size as well. We will need to know how big the protein is to make our solvation box for the next step. A good rule of thumb is to give your protein about 10 angstroms buffer space between each of the sides of the box. I will usually round up the largest side that pacmol recommends and use that for all sides of my box. 
+
+
+For the galectin-3 system I use an 80x80x80 box, which is slightly overestimating the box size but you want to make sure that the protein is never interacting with its mirror images across periodic boundaries. ***This is especially tricky for flexible molecules!*** The downside to a larger volume box be the longer simulation time that is required. 
 
 ### 
 

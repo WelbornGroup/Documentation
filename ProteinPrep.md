@@ -42,7 +42,7 @@ Save the new pdb separate under a name like ```ikjl_clean.pdb```
 
 ### Add Hydrogens
 
-Most pdb files will need polar hydrogens added. This can be done in software like ChimeraX, however our group uses the '[reduce](https://github.com/rlabduke/reduce/blob/master/README.md)' program from the Richardson lab for predicting protonation states. There is also a [reduce2](https://github.com/cctbx/cctbx_project/tree/master/mmtbx/reduce) out now which will continue to have support, however it needs to be installed as part of the [cctbx](https://github.com/cctbx/cctbx_project/tree/master) package. The commands may be slightly different using the reduce2 version. 
+Most pdb files will need polar hydrogens added, if not all hydrogens added. This can be done in software like ChimeraX, however our group uses the '[reduce](https://github.com/rlabduke/reduce/blob/master/README.md)' program from the Richardson lab for predicting protonation states. There is also a [reduce2](https://github.com/cctbx/cctbx_project/tree/master/mmtbx/reduce) out now which will continue to have support, however it needs to be installed as part of the [cctbx](https://github.com/cctbx/cctbx_project/tree/master) package. The commands may be slightly different using the reduce2 version. 
 
 Download a version of reduce, open a terminal, and change to the directory where your pdb file is located.
 

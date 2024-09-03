@@ -19,7 +19,9 @@ From our 1kjl galectin-3 example we can look at the pacmol output we see that we
 Alternatively, you can make it simple and make all of the histidines a single protonation state by changing all HIS to HIE.
 
 You can accomplish this with find and replace in a text editor, or an example with terminal is:
-```sed 's/HIS/HIE/g' 1kjl_complete.pdb > 1kjl_prep1.pdb```
+```sh
+sed 's/HIS/HIE/g' 1kjl_complete.pdb > 1kjl_prep1.pdb
+```
 
 If there is a histidine in an active site or one that is positively charged you may not want to take the all HIE approach.
 
@@ -43,7 +45,9 @@ If you had only a protein present you are done with the PDB to Tinker xyz conver
 
 Make a copy of the pdb file `filename_hetatm.pdb` and change `ATOM` for `HETATM` for the water, ions and ligand atoms using a command like:
 
-'sed '4501,65000 s/ATOM  /HETATM/g' filename.pdb > filename_hetatm.pdb'
+```sh
+sed '4501,65000 s/ATOM  /HETATM/g' filename.pdb > filename_hetatm.pdb
+```
 
 This will change `ATOM` for `HETATM` for lines 4501 to 65000 range inclusive (make sure there are two spaces after `ATOM` to conserve the spacing between columns). These lines should be corresponding to the water, ion and ligand coordinates in our file and not the protein lines.
 

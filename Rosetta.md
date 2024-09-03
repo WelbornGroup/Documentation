@@ -80,12 +80,12 @@ Edit (i) the number of residues in the line setting the range for `PivotResidues
 
 Execute the script by typing `./write_flags_backrub.py name_of_file.pdb X77.params`. This will create the file `flags_backrub` that contains the parameter for the simulation (CHECK IT).
 
-Finally, launch the simulation on Cascades by typing `sbatch launch_backrub.sh` where `launch_backrub.sh` is:
+Finally, launch the simulation on ARC by typing `sbatch launch_backrub.sh` where `launch_backrub.sh` is:
 
 
 
 ```sh
-#!/bin/bash -l
+#!/bin/bash
 #SBATCH -p normal_q
 #SBATCH -J Backrub
 #SBATCH -N 1
@@ -144,7 +144,7 @@ Launch the simulation by typing `sbatch launch_fixbb.sh` where `launch_fixbb.sh`
 
 
 ```sh
-#!/bin/bash -l
+#!/bin/bash
 #SBATCH -p normal_q
 #SBATCH -J Fixbb
 #SBATCH -N 1
@@ -152,10 +152,10 @@ Launch the simulation by typing `sbatch launch_fixbb.sh` where `launch_fixbb.sh`
 #SBATCH -t 4:59:00 
 #SBATCH -A welbornlab
 
-~/rosetta/main/source/bin/fixbb.static.macosclangrelease @flags_fixbb > output.txt
+~/rosetta/main/source/bin/fixbb.static.linuxgccrelease @flags_fixbb > output.txt
 
 ```
-This excutable is for Mac version. If you are using Linux version, change the excutable to `fixbb.static.linuxgccrelease`.
+If you are using Mac version, change the excutable to `fixbb.static.macosclangreleaselinuxgccrelease`.
 
 
 

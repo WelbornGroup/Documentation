@@ -34,11 +34,49 @@ ATOM   1135  CD1 ILE A 250       8.149  15.133 -14.690  1.00 26.48           C
 END                                                                             
 ```
 
-Note the protein should have 1135 atoms once cleaned, for our galectin-3 example.
+Note the protein should have 1135 atoms once cleaned, for our galectin-3 example. However if we look closely at the VMD structure or the text file we will notice some residues have duplicate entries. For example this methionine has an A or B version in the file with different coordinates:
+```
+ATOM   1112  N  AMET A 249      14.282  15.446 -10.448  0.50 24.18           N  
+ATOM   1113  N  BMET A 249      14.288  15.440 -10.462  0.50 25.08           N  
+ATOM   1114  CA AMET A 249      13.189  16.413 -10.448  0.50 23.28           C  
+ATOM   1115  CA BMET A 249      13.203  16.405 -10.476  0.50 24.17           C  
+ATOM   1116  C  AMET A 249      12.930  16.842 -11.884  0.50 24.72           C  
+ATOM   1117  C  BMET A 249      12.942  16.786 -11.920  0.50 25.46           C  
+ATOM   1118  O  AMET A 249      13.840  17.313 -12.551  0.50 24.38           O  
+ATOM   1119  O  BMET A 249      13.864  17.143 -12.637  0.50 25.01           O  
+ATOM   1120  CB AMET A 249      13.530  17.680  -9.640  0.50 21.74           C  
+ATOM   1121  CB BMET A 249      13.562  17.692  -9.714  0.50 22.94           C  
+ATOM   1122  CG AMET A 249      13.791  17.471  -8.149  0.50 20.05           C  
+ATOM   1123  CG BMET A 249      13.661  17.547  -8.203  0.50 21.44           C  
+ATOM   1124  SD AMET A 249      12.446  16.605  -7.310  0.50 17.69           S  
+ATOM   1125  SD BMET A 249      12.076  17.059  -7.456  0.50 19.67           S  
+ATOM   1126  CE AMET A 249      11.093  17.830  -7.356  0.50 17.62           C  
+ATOM   1127  CE BMET A 249      12.581  16.869  -5.752  0.50 19.75           C  
+```
+This is a common occurrance in crystal structure files and we can either deal with it now or leave it for later. Most of the software we use knows how to deal with alternate atom coordinates for residues, and it should not be a problem leaving them. However, I like to remove one of the versions of the amino acids at this stage. You can either write a script or manually delete the lines of the B version, and rename the A version of the residues to the normal three letter description. 
 
-Save the new pdb separate under a name like ```ikjl_clean.pdb```
+Here is an example python script `alt_residues.py` to remove the alternate atom positions:
+```py
+def process_file(input_file, output_file):
+    with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
+        for line in infile:
+            if len(line) >= 17:  # Ensure the line has at least 17 characters
+                if line[16] == 'A':  # 17th position (index 16) is 'A'
+                    line = line[:16] + ' ' + line[17:]  # Replace 'A' with a space
+                    outfile.write(line)
+                elif line[16] == 'B':  # 17th position is 'B'
+                    continue  # Skip writing this line (delete line from new stripped file)
+                else:  # 17th position is a space or any other character keep as is
+                    outfile.write(line)
+            else:
+                outfile.write(line)  # Write the line as it is if it's shorter than 17 characters
 
+# Example usage:
+process_file('1kjl.pdb', '1kjl_stripped.pdb')
+```
+I am using the 'stripped' term to note that our protein file now has no alt atom coordinates and no hydrogens still. Open and re-save the file in VMD to fix any numbering issues that could have arised. 
 
+We should see that our protein 1107 atoms and no duplicate entries for the residues.
 
 ### Add Hydrogens
 
@@ -47,14 +85,14 @@ Most pdb files will need polar hydrogens added, if not all hydrogens added. This
 Download a version of reduce, open a terminal, and change to the directory where your pdb file is located.
 
 ```
-reduce -build 1kjl_clean.pdb > 1kjl_prot.pdb
+reduce -build 1kjl_stripped.pdb > 1kjl_clean.pdb
 ```
 
 The build argument is to make sure the histidines are correctly protonated. The histidines are the most important to pay attention to during the protonation step and will decide the overall charge of your protein, along with your charged residues (Arg, Lys, Asp, Glu). 
 
 Open the output.pdb and you should see new lines corresponding to the hydrogens atoms that were added. Note however that these atoms are not numbered sequentially. It is good practice to open the file in VMD (or similar software) to CHECK the structure and save it again as ```1kjl_complete.pdb```, this will also fix the numbering issue. ***Always check your pdb files regularly in both VMD and text editors to make sure problems are found early in the process.***
 
-Note that our galectin-3 protein now has 2289 atoms.
+Note that our galectin-3 protein now has 2227 atoms.
 
 You will want to keep an eye on the total number of atoms in your protein system at this point, record it, and keep track of it in the following steps (solvation & tinker xyz conversion). Sometimes the number of atoms can change during these steps due to protonation changes and you will want to know when this happens.
 

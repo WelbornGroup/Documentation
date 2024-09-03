@@ -22,7 +22,7 @@ Workflow:
 
 **3.** [Optional] Use Rosetta to create multiple starting conformations of your protein. [Rosetta](./Rosetta.md)
 
-**4a.** Solvate your system with Tinker. ***Best for small molecules and files already in .txyz format***[PDBtoTXYZ](PDBtoTinkerXYZ.md) ***THEN*** [Solvate Tinker](./SolvateTinker.md)
+**4a.** Solvate your system with Tinker. ***Best for small molecules and files already in .txyz format*** [PDBtoTXYZ](PDBtoTinkerXYZ.md) ***THEN*** [Solvate Tinker](./SolvateTinker.md)
 
 **OR**
 

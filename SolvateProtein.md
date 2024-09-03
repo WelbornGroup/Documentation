@@ -12,41 +12,80 @@ Then navigate to the directory where you have your protein chain PDB and execute
 
 ```sh
 cd $PATH_to_directory
-~/Downloads/packmol/solvate.tcl name_of_file.pdb
+~/Downloads/packmol/solvate.tcl 1kjl_complete.pdb
 
 ```
 Note that it may be a good idea to move the binaries from the `Downloads` folder. Don't forget to update the path to `solvate.tcl` if that is the case. 
 
-This should return the total structure charge, for example:
+This should return the total structure charge and other information:
 
 ```sh
-  HIS = 6 (associated charge = 0) 
-  ARG = 26 (associated charge = +26) 
-  LYS = 36 (associated charge = +36) 
-  GLU = 36 (associated charge = -36) 
-  ASP = 34 (associated charge = -34) 
+ ###########################################################################
+ solvate.tcl script: Solvates a (protein) structure with water and ions,
+                     using Packmol. 
+ ###########################################################################
+ Input pdb file to be solvated: 1kjl_complete.pdb 
+ User set structure charge: none  - will compute from structure. 
+ User set shell size: none  - using default: 15.0 Angs. 
+ User set density: none  - using default: 1.0 g/ml 
  -------------------------------------------------------
-  Total structure charge = -8
+  Minimum and maximum coordinates of structure atoms 
+  X_min = -12.695     X_max = 26.753 
+  Y_min = -22.049     Y_max = 23.335 
+  Z_min = -24.602     Z_max = 13.634 
+ -------------------------------------------------------
+  Box side length in each direction: 
+  x: 69.44800000000001 
+  y: 75.384 
+  z: 68.236 
+ -------------------------------------------------------
+ -------------------------------------------------------
+  HIS = 4 (associated charge = 0) 
+  ARG = 9 (associated charge = +9) 
+  LYS = 8 (associated charge = +8) 
+  GLU = 6 (associated charge = -6) 
+  ASP = 7 (associated charge = -7) 
+ -------------------------------------------------------
+  Total structure charge = 4
+ -------------------------------------------------------
+ Unsure about mass of element HG3: 1.00800. Is this correct? (y/n)
+
 ```
 
-Note that you obtain additional information from the routine that you may find useful, such as
+
+Type 'y' and hit enter for any hydrogens it cannot identify
+
 
 ```sh
-  Number of water molecules to be put:   26231 
-  Total volume: 881702.27 A^3
-  Volume occupied by water: 784326.28 A^3 
-  Number of Sodium ions to be put: 76
-  Number of Chloride ions to be put: 68
+ -------------------------------------------------------
+  Molar mass of structure: 17224.708600000013
+ -------------------------------------------------------
+  Number of water molecules to be put:   10991 
+  Total volume: 357233.75 A^3
+  Volume occupied by water: 328622.34 A^3 
+  Number of Sodium ions to be put: 28
+  Number of Chloride ions to be put: 32
   Wrote packmol input. 
  -------------------------------------------------------
   Use these lengths for periodic boundary conditions: 
-  x: 88.17699999999999
-  y: 118.41000000000001
-  z: 87.142
+  x: 70.44800000000001
+  y: 76.384
+  z: 69.236
+ -------------------------------------------------------
+ -------------------------------------------------------
+  Now, run packmol with: packmol < packmol_input.inp       
+ -------------------------------------------------------
+  The solvated file will be: solvated.pdb 
+ -------------------------------------------------------
 ```
 
+We use packmol for the charge information, number of ions to add, and to get a box size estimate. 
+
+You can manually go into VMD to measure your system size as well. We will need to know how big the protein is to make our solvation box for the next step. A good rule of thumb is to give your protein about 10 angstroms buffer space between each of the sides of the box. I will usually round up the largest side that pacmol recommends and use that for all sides of my box. For the galectin-3 system I use an 80x80x80 box, which is slightly overestimating the box size but you want to make sure that the protein is never interacting with its mirror images across periodic boundaries. ***This is especially tricky for flexible molecules!*** The downside to a larger volume box be the longer simulation time that is required. 
+
+
 ### Solvate the protein on ARC
-There are a number of routines available to solvate a protein. We use the Gromacs `solvate` routine as it allows water to be placed within as well as outside the protein. Gromacs is already installed on ARC so we continue there. 
+There are a number of routines available to solvate a protein. Instad of using pacmol, we will use the Gromacs `solvate` routine as it allows water to be placed within as well as outside the protein. Gromacs is already installed on the tinkercliffs CPU on ARC so we continue there. 
 
 Copy the pdb file over to ARC and log in:
 
@@ -57,7 +96,7 @@ cd path_to_working_directory
 
 ```
 
-Or use OpenOnDemand and open a tinkercliffs cpu terminal.
+***OR*** use OpenOnDemand and open a tinkercliffs cpu terminal. I prefer this and would suggest it to beginners over using purely a terminal to access ARC.
 
 Write the script `solvate.sh` that contains:
 
@@ -72,7 +111,7 @@ Write the script `solvate.sh` that contains:
  
 module load GROMACS
 
-# Center the protein in a box. Change the name of the input file (protein_input.pdb and the size of the box. The units are in nm here!
+# Center the protein in a box. Change the name of the input file (protein_input.pdb and the size of the box. Watch out the units are in nm here!
 gmx editconf -f $1 -o box.pdb -box 8.000 8.000 8.000 -c 
 
 # Fill the box with water. You can change the name of the output file (Box_Water.pdb)

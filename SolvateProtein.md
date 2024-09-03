@@ -1,6 +1,7 @@
 # Solvate a protein from PDB
 
-This assumes that you have a PDB file of your complete PROTONATED protein chain (and ligand if applicable). If you have multiple chains, select one now. If you are missing residues or protons go back and follow the instructions in `AddMissingResidues.md` and `AddHydrogensPDB.md`, respectively. 
+This assumes that you have a PDB file of your complete PROTONATED protein chain (and ligand if applicable). If you have multiple chains, select one now. If you are missing residues or protons go back and follow the instructions in [ProteinPrep](./ProteinPrep.md)
+
 
 ### What is the charge of the system ?
 The charge of the protein is computed by adding the charge of all residues. Only HIS, ARG, LYS, GLU and ASP are charged so the problem is equivalent to counting how many of these residues you have in your protein. 
@@ -11,7 +12,7 @@ Then navigate to the directory where you have your protein chain PDB and execute
 
 ```sh
 cd $PATH_to_directory
-~/Downloads/packmol/solvate.tcl Name_of_file.pdb
+~/Downloads/packmol/solvate.tcl name_of_file.pdb
 
 ```
 Note that it may be a good idea to move the binaries from the `Downloads` folder. Don't forget to update the path to `solvate.tcl` if that is the case. 
@@ -45,13 +46,13 @@ Note that you obtain additional information from the routine that you may find u
 ```
 
 ### Solvate the protein on Cascades
-There are a number of routines available to solvate a protein. However, in the Welborn Group, we use Gromacs `solvate` routine as it allows water to be within as well as outside the protein. Gromacs is already installed on Cascades so we continue there. 
+There are a number of routines available to solvate a protein. We use the Gromacs `solvate` routine as it allows water to be placed within as well as outside the protein. Gromacs is already installed on ARC so we continue there. 
 
-Copy the file over and log onto Cascades:
+Copy the pbd file over to ARC and log in:
 
 ```sh
-scp Name_of_file.pdb username@cascades1.arc.vt.edu:/path_to_working_directory/
-ssh username@cascades1.arc.vt.edu
+scp Name_of_file.pdb username@tinkercliffs.arc.vt.edu:/path_to_working_directory/
+ssh username@tinkercliffs.arc.vt.edu
 cd path_to_working_directory
 
 ```

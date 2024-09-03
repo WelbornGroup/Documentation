@@ -15,13 +15,28 @@ The protein file will usually include crytallography artifacts such as water, io
 You can **clean the protein** file in multiple ways:
 1. Open the `.pdb` file in a software such as ChimeraX. Here you can use the selection tools to specify the unwanted molecules and remove them. This is a beginner friendly way to clean a file and is the most intuitive since you can visualize what is being removed.
 
-2. Alternatively, open the `.pdb` file in a text editor and manually delete the unwanted atom lines from the file. This is a more hands-on approach but will allow you to familiarize yourself with the internal structure of these file types. The top of the PDB contain a header with information about the protein. You can remove this portion for the working file after you have read through the important sections. The `ATOM` lines signify the start of the actual protein structure. Normally the protein atoms will be listed first, followed by the water and other extraneous molecules. The file will sometimes end with a connectivity section, especially for the non-protein molecules. You will want to keep the proper 'ATOM' lines and the 'END' line for your cleaned protein. You can load the pdb file into VMD and save it again to reformat it nicely when you are done.
+2. Alternatively, open the `.pdb` file in a text editor and manually delete the unwanted atom lines from the file. This is a more hands-on approach but will allow you to familiarize yourself with the internal structure of these file types. The top of the PDB contain a header with information about the protein. You can remove this portion for the working file after you have read through the important sections. The `ATOM` lines signify the start of the actual protein structure. 
 
-Save the new stripped pdb under a new name like ```ikjl_clean.pdb```
+
+```
+ATOM      1  N   PRO A 113      25.131  -4.504 -10.006  1.00 31.14           N  
+ATOM      2  CA  PRO A 113      23.749  -4.861  -9.555  1.00 30.32           C  
+ATOM      3  C   PRO A 113      23.547  -4.400  -8.112  1.00 29.57           C  
+ATOM      4  O   PRO A 113      24.520  -4.262  -7.348  1.00 30.41           O  
+ATOM      5  CB  PRO A 113      23.669  -6.314  -9.512  1.00 31.16           C  
+...
+```
+
+
+Normally the protein atoms will be listed first, followed by the water and other extraneous molecules. The file will sometimes end with a connectivity section, especially for the non-protein molecules. You will want to keep the proper 'ATOM' lines and the 'END' line for your cleaned protein, while removing the rest. You can load the pdb file into VMD to check and save it again to renumber it if needed. It is good practice to save new files when changes are made, this will allow you to compare the files to see the specific chagnes and have a backup to revert to if needed.
+
+Save the new pdb separate under a name like ```ikjl_clean.pdb```
+
+
 
 ### Add Hydrogens
 
-Most pdb files will need polar hydrogens added. This can be done in software like ChimeraX, however our group uses the '[reduce](https://github.com/rlabduke/reduce/blob/master/README.md)' program from the Richardson lab for predicting protonation states. There is also a [reduce2](https://github.com/cctbx/cctbx_project/tree/master/mmtbx/reduce) out now which may be better to start with since it will continue to have support, however it needs to be installed as part of the [cctbx](https://github.com/cctbx/cctbx_project/tree/master) package. 
+Most pdb files will need polar hydrogens added. This can be done in software like ChimeraX, however our group uses the '[reduce](https://github.com/rlabduke/reduce/blob/master/README.md)' program from the Richardson lab for predicting protonation states. There is also a [reduce2](https://github.com/cctbx/cctbx_project/tree/master/mmtbx/reduce) out now which will continue to have support, however it needs to be installed as part of the [cctbx](https://github.com/cctbx/cctbx_project/tree/master) package. 
 
 Download a version of reduce, open a terminal, and change to the directory where your pdb file is located.
 
@@ -29,7 +44,7 @@ Download a version of reduce, open a terminal, and change to the directory where
 reduce -build 1kjl_clean.pdb > 1kjl_prot.pdb
 ```
 
-This command may be slightly different using the reduce2 version. The build argument is to make sure the Histdines are correctly protonated.
+The build argument is to make sure the Histdines are correctly protonated. This command may be slightly different using the reduce2 version, and you may need to specify the path to the reduce executable. 
 
 Open the output.pdb and you should see new lines corresponding to the hydrogens atoms that were added. Note however that these atoms are not numbered sequentially. It is good practice to open the file in VMD (or similar software) to CHECK the structure and save it again as a pdb. This will also fix the numbering issue. ***Always check your pdb files regularly in both VMD and text editors to make sure problems are found early in the process.***
 

@@ -22,11 +22,15 @@ Workflow:
 
 **3.** [Optional] Use Rosetta to create multiple starting conformations of your protein. [Rosetta](./Rosetta.md)
 
-**4a.** Solvate your system with Tinker. ***Best for small molecules and files already in .txyz format*** [PDBtoTXYZ](PDBtoTinkerXYZ.md) ***THEN*** [Solvate Tinker](./SolvateTinker.md)
+**4a.** Solvate your system with Tinker. ***Best for small molecules and files already in .txyz format***
+
+[Convert your PDB file first to Tinker XYZ format](PDBtoTinkerXYZ.md) ***THEN*** [Solvate with Tinker](./SolvateTinker.md)
 
 **OR**
 
-**4b.** Solvate your protein system with Gromacs. ***Best for proteins with internal cavities that need hydration*** [Solvate Protein](./SolvateProtein.md) ***THEN*** [PDBtoTXYZ](PDBtoTinkerXYZ.md)
+**4b.** Solvate your protein system with Gromacs. ***Best for proteins with internal cavities that need hydration*** 
+
+[Solvate with Gromacs](./SolvateProtein.md) ***THEN*** [Convert your pdb to xyz](PDBtoTinkerXYZ.md)
      
 **5.** Run the dynamics simulation with Tinker9. 
 

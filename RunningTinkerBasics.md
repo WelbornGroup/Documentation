@@ -1,30 +1,26 @@
-#Tinker simulations
+# Tinker simulations
 
-Log onto Cascades and create/go to the directory where you have your input Tinker XYZ file (see `PDBtoTinkerXYZ.md` if you don't have such input). 
+Log onto ARC and create/go to the directory where you have your input Tinker XYZ file (see `PDBtoTinkerXYZ.md` if you don't have such input). 
 
 Create a Tinker key file `tinker.key` that contains the following:
 
 
 ```sh
-parameters amoebabio18_modified.prm 
-openmp-threads 16
+parameters amoebabio18.prm 
 
-a-axis 76.00 
-b-axis 78.00
-c-axis 75.00
+integrator nose-hoover
+
+a-axis 80.00 
+b-axis 80.00
+c-axis 80.00
 
 polar-eps 0.000010
 cutoff 10.0
 ewald
-thermostat nose-hoover
-barostat nose-hoover
+
 neighbor-list
-integrator beeman
 polar-predict
 polarization mutual
-
-maxiter 8000
-printout 100
 
 ```
 

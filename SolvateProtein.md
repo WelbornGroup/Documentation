@@ -3,7 +3,7 @@
 This assumes that you have a PDB file of your complete PROTONATED protein chain (and ligand if applicable). If you have multiple chains, select one now. If you are missing residues or protons go back and follow the instructions in [ProteinPrep](./ProteinPrep.md)
 
 
-### What is the charge of the system ?
+### Pacmol - system charge and box size
 The charge of the protein is computed by adding the charge of all residues. Only HIS, ARG, LYS, GLU and ASP are charged so the problem is equivalent to counting how many of these residues you have in your protein. 
 
 There is a very simple tool to help you do that, which you can download with the [Packmol software](http://m3g.iqm.unicamp.br/packmol/download.shtml). Once you have downloaded the binaries, look for the executable `solvate.tcl`
@@ -20,7 +20,7 @@ Note that it may be a good idea to move the binaries from the `Downloads` folder
 This should return the total structure charge and other information:
 
 ```sh
- ###########################################################################
+  ###########################################################################
  solvate.tcl script: Solvates a (protein) structure with water and ions,
                      using Packmol. 
  ###########################################################################
@@ -40,7 +40,7 @@ This should return the total structure charge and other information:
   z: 68.236 
  -------------------------------------------------------
  -------------------------------------------------------
-  HIS = 4 (associated charge = 0) 
+  HIS = 0 (associated charge = 0) 
   ARG = 9 (associated charge = +9) 
   LYS = 8 (associated charge = +8) 
   GLU = 6 (associated charge = -6) 
@@ -49,7 +49,6 @@ This should return the total structure charge and other information:
   Total structure charge = 4
  -------------------------------------------------------
  Unsure about mass of element HG3: 1.00800. Is this correct? (y/n)
-
 ```
 
 
@@ -58,11 +57,11 @@ Type 'y' and hit enter for any hydrogens it cannot identify
 
 ```sh
  -------------------------------------------------------
-  Molar mass of structure: 17224.708600000013
+  Molar mass of structure: 16772.934399999976
  -------------------------------------------------------
-  Number of water molecules to be put:   10991 
+  Number of water molecules to be put:   11016 
   Total volume: 357233.75 A^3
-  Volume occupied by water: 328622.34 A^3 
+  Volume occupied by water: 329372.54 A^3 
   Number of Sodium ions to be put: 28
   Number of Chloride ions to be put: 32
   Wrote packmol input. 
@@ -72,16 +71,17 @@ Type 'y' and hit enter for any hydrogens it cannot identify
   y: 76.384
   z: 69.236
  -------------------------------------------------------
- -------------------------------------------------------
-  Now, run packmol with: packmol < packmol_input.inp       
- -------------------------------------------------------
-  The solvated file will be: solvated.pdb 
- -------------------------------------------------------
 ```
 
 We use packmol for the charge information, number of ions to add, and to get a box size estimate. 
 
-You can manually go into VMD to measure your system size as well. We will need to know how big the protein is to make our solvation box for the next step. A good rule of thumb is to give your protein about 10 angstroms buffer space between each of the sides of the box. I will usually round up the largest side that pacmol recommends and use that for all sides of my box. For the galectin-3 system I use an 80x80x80 box, which is slightly overestimating the box size but you want to make sure that the protein is never interacting with its mirror images across periodic boundaries. ***This is especially tricky for flexible molecules!*** The downside to a larger volume box be the longer simulation time that is required. 
+Our system has a positive charge of 4 meaning to neutralize it we will need to add 4 negative ions, probably chloride ions. 
+
+We also get a nice measurement of the protein dimensions.You can manually go into VMD to measure your system size as well. We will need to know how big the protein is to make our solvation box for the next step. A good rule of thumb is to give your protein about 10 angstroms buffer space between each of the sides of the box. I will usually round up the largest side that pacmol recommends and use that for all sides of my box. 
+
+
+For the galectin-3 system I use an 80x80x80 box, which is slightly overestimating the box size but you want to make sure that the protein is never interacting with its mirror images across periodic boundaries. ***This is especially tricky for flexible molecules!*** The downside to a larger volume box be the longer simulation time that is required. 
+
 
 
 ### Solvate the protein on ARC
@@ -112,7 +112,7 @@ Write the script `solvate.sh` that contains:
 module load GROMACS
 
 # Center the protein in a box. Change the name of the input file (protein_input.pdb and the size of the box. Watch out the units are in nm here!
-gmx editconf -f $1 -o box.pdb -box 8.000 8.000 8.000 -c 
+gmx editconf -f 1kjl_complete.pdb -o box.pdb -box 8.000 8.000 8.000 -c 
 
 # Fill the box with water. You can change the name of the output file (Box_Water.pdb)
 gmx solvate -cp box.pdb -o box_water.pdb 
@@ -145,12 +145,21 @@ MASTER        0    0    0    0    0    0    0    0    1    0    1    0
 END
 ```
 
-Note that since the solvation process is very short, you have two options to execute the script.
+Submit the job on the queue by typing `sbatch solvate.sh`
 
-Option 1 (preferred): run it interactively on the login node by typing `./solvate.sh`.
+Note that since the solvation process is very short, and we use the `dev_q` 
 
-Option 2: use the `dev_q` to submit the job on the queue by typing `sbatch solvate.sh`
+The development queues on ARC have a smaller limit on the amount of jobs you can submit and also a max time limit of 4 hours per job, they can be useful for short and intensive jobs that may be too much to run directly on the login node.
 
-The development queues on ARC have a smaller limit on the amount of jobs you can submit and also a max time limit of 4 hours per job, they can be useful for short and intensive jobs that may be too much to run on the login node.
+Look through the slurm ouput file to see if the solvation was successful, there should be something similar to this:
+```
+Try 223 success (now 51072 atoms)!
 
+Added 33 molecules (out of 33 requested)
+Writing generated configuration to box_water_NaCl.pdb
 
+Output configuration contains 51072 atoms in 16461 residues
+
+```
+
+`box_water_NaCl.pdb` is our output file in this example and can be opened in VMD to analyze. You can rename this file and will use it for [PDBtoTinkerXYZ](./PDBtoTinkerXYZ.md)

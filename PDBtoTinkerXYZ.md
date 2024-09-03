@@ -46,10 +46,10 @@ If you had only a protein present you are done with the PDB to Tinker xyz conver
 Make a copy of the pdb file `filename_hetatm.pdb` and change `ATOM` for `HETATM` for the water, ions and ligand atoms using a command like:
 
 ```sh
-sed '4501,65000 s/ATOM  /HETATM/g' filename.pdb > filename_hetatm.pdb
+sed '2232,51076 s/ATOM  /HETATM/g' filename.pdb > filename_hetatm.pdb
 ```
 
-This will change `ATOM` for `HETATM` for lines 4501 to 65000 range inclusive (make sure there are two spaces after `ATOM` to conserve the spacing between columns). These lines should be corresponding to the water, ion and ligand coordinates in our file and not the protein lines.
+This will change `ATOM` for `HETATM` for lines 2232 to 51076, range inclusive (make sure there are two spaces after `ATOM` to conserve the spacing between columns). These lines should be corresponding to the water, ion and ligand coordinates in our file and not the protein lines.
 
 3) Convert `filename_hetatm.pdb` to Tinker XYZ with: `~/Tinker/pdbxyz filename_hetatm.pdb `. This creates a second XYZ file (`filename_hetatm.xyz`) with actual atom types assigned to the protein, water and ions (check). Note however that the ligand coordinates are missing here since they were not present in the parameter file. Check that the number of atoms in this new XYZ file = total number of atoms - number of ligand atoms + any terminal residue additions. 
 

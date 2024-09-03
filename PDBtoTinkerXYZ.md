@@ -14,16 +14,19 @@ For a quick overview of how Tinker works and what Tinker XYZ files are, you can 
 ### Prepare the PDB file
 1) Change the name of histidine residues from HIS to HIE *or* HID if necessary, so that the protonation state remains when converting to Tinker XYZ. These labels state whether the histidine is protonated in the epsilon or delta position, and the HIS stands for the doubly protonated state where the histidine is positively charged.
 
-From our 1kjl galectin-3 example we saw in the pacmol output that we have 4 histidines that are contributing no charge, therefore they are all in HIE or HID states. You can look back at the output from the reduce program to see which of the hydrogens is present to determine which state that HIS should be changed to. It may be easier to open the 1kjl_complete.pdb or tinker xyz file of your protein in VMD and visually assess which state each histidine is in. The selection `all resname HIS` should select the residues for you. You will see that the four histidines in our system, from lower to higher index, are in states HID HIE HIE HID.
+From our 1kjl galectin-3 example we can look at the pacmol output we see that we have 4 histidines that are contributing no charge, therefore they are all in HIE or HID states. You can look back at the output PDB from the reduce program to see which of the hydrogens was omitted to determine which state that HIS should be changed to. It may be easier to open the 1kjl_complete.pdb in VMD and visually assess the histidines. The selection `all resname HIS` should select the residues for you. You will see that the four histidines in our system, from lower to higher atom index, are in states HID HIE HIE HID.
 
-Alternatively, you can make it simple and make all of the histidine a single protonation state by changing all HIS to HIE.
+Alternatively, you can make it simple and make all of the histidines a single protonation state by changing all HIS to HIE.
 
 You can accomplish this with find and replace in a text editor, or an example with terminal is:
 `sed 's/HIS/HIE/g' 1kjl_complete.pdb > 1kjl_prep1.pdb`
 
-2) If coming from gromacs solvate, rename the water "residues" as `HOH` rather than the default Gromacs `SOL`. You can also do this in vim by typing `sed 's/HIS/HIE/g' 1kjl_prep1.pdb > 1kjl_prep2.pdb` 
+If there is a histidine in an active site or one that is positively charged you may not want to take the all HIE approach.
 
-3) If a ligand (or any complexed small molecule) is present, make sure it is at the end of the file. In general, it will be included after the protein coordinates and will need to be cut and paste after the water+ions. Open the PDB in VMD and save it again to update the atom numbering (check the result by making sure the ligand atoms appear at the end with its atom numbers in sequential order). 
+
+2) If coming from gromacs solvate, rename the water "residues" as `HOH` rather than the default Gromacs `SOL`. You can do this in terminal with `sed 's/SOL/HOH/g' 1kjl_prep1.pdb > 1kjl_prep2.pdb` 
+
+3) If a ligand (or any complexed small molecule) is present, make sure it is at the end of the file. In general, it will be included after the protein coordinates and will need to be cut and paste after any water+ions that are present. Open the PDB in VMD and save it again to update the atom numbering (check the result by making sure the ligand atoms appear at the end with its atom numbers in sequential order). 
 
 
 
@@ -32,20 +35,21 @@ You can accomplish this with find and replace in a text editor, or an example wi
 
   It will prompt you for a parameter file, type `amoebabio18.prm` (you should have it in your working directory alongside the PDB) and hit enter
 
-This will create the file `filename.xyz` where all atoms from the pdb were converted to Tinker XYZ and assigned atom types that are probably not all correct. CHECK (please) that you indeed have the same number of atoms as in the PDB. 
+This will create the file `filename.xyz` where all atoms from the pdb were converted to Tinker XYZ. CHECK (please) that you indeed have the same number of atoms as in the PDB. For our case we can see that we actually gained 3 atoms in this process. This is not a problem and it usually happens at the terminal amino acids when converting to a tinker xyz. For this specific example our N-terminus proline gained 2 hydrogens giving it a positive charge, and our C-terminus gained an oxygen to complete a carboxylic acid group on the isoleucine. Both of these changes are fine since we normally want charged terminal ends for our simulations, so our new atom total is 2230. (If we had instead left our histidine groups named HIS we would see our atom number at 2234.)
 
-2) Make a copy of the pdb file `filename.pdb` and change `ATOM` for `HETATM` for the water, ions and ligand atoms. Do this by typing:
+If you had only a protein present you are done with the PDB to Tinker xyz conversion!
 
-```sh
-cp filename.pdb filename_hetatm.pdb
-vi hetatm.pdb 
+2) If you have water, ions, or ligands present:
 
-```
-and look for the line numbers (type `:set number` in vim) corresponding to the water, ion and ligand coordinates. For example if the protein coordinates go from line 2 to line 4500 and the rest of the coordinates go from line 4501 to 65000, type `:4501,65000 s/ATOM  /HETATM/g` (make sure there are two spaces after `ATOM` to conserve the spacing between columns). This will change `ATOM` for `HETATM` between lines 4501 and 65000, therefore leaving the protein coordinates as it were. 
+Make a copy of the pdb file `filename_hetatm.pdb` and change `ATOM` for `HETATM` for the water, ions and ligand atoms using a command like:
 
-3) Convert `filename_hetatm.pdb` to Tinker XYZ with: `~/Tinker/pdbxyz filename_hetatm.pdb `. This creates a second XYZ file (`filename_hetatm.xyz`) with actual atom types assigned to the protein, water and ions (check). Note however that the ligand coordinates are missing here (check that the number of atoms in this new XYZ file = total number of atoms - number of ligand atoms). 
+'sed '4501,65000 s/ATOM  /HETATM/g' filename.pdb > filename_hetatm.pdb'
 
-4) Cut the ligand coordinates from the first XYZ file you converted (`filename.xyz`). Since you put the ligand coordinates at the end, this is trivially done by typing `tail -n 81 filename.xyz >> ligand.xyz` for example. Replace `81` by the actual number of atoms in your ligand. To assign atom types to the ligand, you will need a script that pairs atom names to atom types (make sure all atoms have a unique name for this, for example C1, C2, C3, ... N1, N2, ... H1, H2, ...H30). Such a script (`atomtype.sh` looks like:
+This will change `ATOM` for `HETATM` for lines 4501 to 65000 range inclusive (make sure there are two spaces after `ATOM` to conserve the spacing between columns). These lines should be corresponding to the water, ion and ligand coordinates in our file and not the protein lines.
+
+3) Convert `filename_hetatm.pdb` to Tinker XYZ with: `~/Tinker/pdbxyz filename_hetatm.pdb `. This creates a second XYZ file (`filename_hetatm.xyz`) with actual atom types assigned to the protein, water and ions (check). Note however that the ligand coordinates are missing here since they were not present in the parameter file. Check that the number of atoms in this new XYZ file = total number of atoms - number of ligand atoms + any terminal residue additions. 
+
+4) Cut the ligand coordinates from the first XYZ file you converted (`filename.xyz`). Since you put the ligand coordinates at the end, this can be done in terminal with `tail -n 81 filename.xyz >> ligand.xyz` for example. Replace `81` by the actual number of atoms in your ligand. To assign atom types to the ligand, you will need a script that pairs atom names to atom types (make sure all atoms have a unique name for this, for example C1, C2, C3, ... N1, N2, ... H1, H2, ...H30). Such a script (`atomtype.sh` looks like:
 
 ```sh
 #!/bin/bash
@@ -68,9 +72,9 @@ for (i=1;i<=NF;i++) printf("%s%s", a[i], seps[i]); print ""}' $1 >> $2
 
 and can be used on `ligand.xyz` as follows `./atomtype.sh ligand.xyz ligand_atomtype.xyz`. This will create the file `ligand_atomtype.xyz` that contains the Tinker XYZ formatted ligand coordinates and corresponding atom types. 
 
-5) Add the ligand coordinates at the end of `filename_hetatm.xyz` for a Tinker XYZ file that contains ALL atoms. This can be done by typing `cat filename_hetatm.xyz ligand_atomtype.xyz >> Final_input.xyz` making sure to delete any blank likes (if there are any) between the two files. 
+5) Add the ligand coordinates at the end of `filename_hetatm.xyz` for a Tinker XYZ file that contains ALL atoms. This can be done by typing `cat filename_hetatm.xyz ligand_atomtype.xyz >> final_input.xyz` making sure to delete any blank likes (if there are any) between the two files. 
 
-6) Update the total number of atoms on the first line (to include the ligand atoms) and CHECK that your `Final_input.xyz` file has (i) an atom type assigned to all atoms (ii) the correct number of atoms. 
+6) Update the total number of atoms on the first line (to include the ligand atoms) and CHECK that your `final_input.xyz` file has (i) an atom type assigned to all atoms (ii) the correct number of atoms. 
 
 
 

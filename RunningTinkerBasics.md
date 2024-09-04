@@ -2,8 +2,22 @@
 
 Log onto ARC and create/go to the directory where you have your input Tinker XYZ file (see `PDBtoTinkerXYZ.md` if you don't have such input). 
 
-Create a Tinker key file `tinker.key` that contains the following:
 
+To run a tinker molecular dynamics simulation you will always need the following file types: 
+
+.xyz - this is your structure file that we have prepared and solvated
+
+.key - this is the tinker key file that will contain settings for the simulation
+
+.prm - this is the parameter file, we have been using amoebabio18.prm for general proteins
+
+.sh - these are bash scripts and we will use these files to submit minimization and dynamic jobs to the supercomputer queue
+
+
+
+First lets create a Tinker key file, you can name this `tinker.key` or my preference is to name it `filename.key` where filename matches my .xyz and .prm file names 
+
+The following is a basic key file with our normal settings for a protein system:
 
 ```sh
 parameters amoebabio18.prm 
@@ -14,104 +28,90 @@ a-axis 80.00
 b-axis 80.00
 c-axis 80.00
 
-polar-eps 0.000010
-cutoff 10.0
-ewald
-
 neighbor-list
+polar-eps 0.00001
+vdw-cutoff 12.0
+vdw-correction
+
+ewald
+ewald-cutoff 7.0
+
 polar-predict
 polarization mutual
 
+verbose
 ```
 
-Edit (i) the path the the parameter file, (ii) the size of the box and (iii) remove the barostat line if NOT performing an NPT simulation. The rest of the keywords are transferable to most simulations we will run. Make sure you know what they mean. 
+You will need to edit (i) the path the the parameter file if it is not in the directory with the key file, you can get rid of this parameter line in your keyfile if you name your .prm file the same as your .xyz and .key (ii) the size of the box since it will change per system and (iii) the integrator line if you are not performing a simulation in the NPT ensemble. In this case the integrator is velocity verlet, the thermostat and barostat are coupled nose-hoover. The rest of the keywords are transferable to most simulations we will run. Look into them to discover what they mean.
 
-###Center the system
-Each software has a different convention to center the system, it is important to be in line with Tinker's convention. Use the Tinker tools by typing:
+We should have all of our files in a directory now, except for the bash submission scripts. 
 
-`~/Tinker/xyzedit Final_input.xyz`
+#### Center the system
 
-Each Tinker routine reads files named `tinker.key` by default. If you have saved the file above under that name then the command will prompt you with:
+We want to make sure our system is centered
 
-```sh
-
-     ######################################################################
-   ##########################################################################
-  ###                                                                      ###
- ###            Tinker  ---  Software Tools for Molecular Design            ###
- ##                                                                          ##
- ##                          Version 8.7  June 2019                          ##
- ##                                                                          ##
- ##               Copyright (c)  Jay William Ponder  1990-2019               ##
- ###                           All Rights Reserved                          ###
-  ###                                                                      ###
-   ##########################################################################
-     ######################################################################
+`/Tinker/xyzedit Final_input.xyz`
 
 
- The Tinker XYZ File Editing Utility Can :
+Choose option #12 `(12) Translate Center of Mass to the Origin` and type enter to exit. You will find a new file `filename.xyz_2` that contains the centered system. 
 
-    (1) Offset the Numbers of the Current Atoms
-    (2) Deletion of Individual Specified Atoms
-    (3) Deletion of Specified Types of Atoms
-    (4) Deletion of Atoms Outside Cutoff Range
-    (5) Insertion of Individual Specified Atoms
-    (6) Replace Old Atom Type with a New Type
-    (7) Assign Connectivities for Linear Chain
-    (8) Assign Connectivities Based on Distance
-    (9) Convert Units from Bohrs to Angstroms
-   (10) Invert thru Origin to Give Mirror Image
-   (11) Translate All Atoms by an X,Y,Z-Vector
-   (12) Translate Center of Mass to the Origin
-   (13) Translate a Specified Atom to the Origin
-   (14) Translate and Rotate to Inertial Frame
-   (15) Move to Specified Rigid Body Coordinates
-   (16) Move Stray Molecules into Periodic Box
-   (17) Delete Molecules Outside of Periodic Box
-   (18) Append a Second XYZ File to Current One
-   (19) Create and Fill a Periodic Boundary Box
-   (20) Soak Current Molecule in Box of Solvent
-   (21) Place Monoatomic Ions around a Solute
-
- Number of the Desired Choice [<Enter>=Exit] :  
-
-```
-Choose option #12 and type enter to exit. You will find a new file `Final_input.xyz_2` that contains the centered system. 
 If you saved the `.key` file under a different name, you will first be asked to provide the path to the parameter file. 
 
 
-###Perform an energy minimization
+#### Perform an energy minimization
 
-To launch an energy minimization, write a submission script `launch_minimization.sh` that contains:
-
-```sh
-#!/bin/bash -l
-#SBATCH -p normal_q
-#SBATCH -J EnergyMinimization
-#SBATCH -N 1
-#SBATCH --ntasks-per-node 32 
-#SBATCH -t 04:59:00 
-#SBATCH -A welbornlab
-​
-~/Tinker/minimize Final_input.xyz_2 -k tinker.key 0.1 > Minimization.log
-
-```
-In addition to the output file `Minimization.log`, output system coordinates will be saved as `Final_input.xyz_3`. It is good practice to center the system before any simulation, so do it again before running the molecular dynamics:
-`~/Tinker/xyzedit Final_input.xyz_3`, which will create a new file `Final_input.xyz_4`.
-
-###Start the molecular dynamics simulation
-Using the latest system coordinate file, write the submission script `launch_dynamics.sh` containing:
+To launch an energy minimization, write a submission script `launch_minimize.sh` that contains:
 
 ```sh
-#!/bin/bash -l
-#SBATCH -p normal_q
-#SBATCH -J MolecularDynamics
-#SBATCH -N 1
-#SBATCH --ntasks-per-node 32 
-#SBATCH -t 04:59:00 
-#SBATCH -A welbornlab
-​
-~/Tinker/dynamic Final_input.xyz_4 -k tinker.key 1000000 1.0 1.0 4 300.00 1.0 > Dynamics.log
+#!/bin/bash
+#SBATCH --account=welbornlab
+#SBATCH --partition=v100_dev_q
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:1
+#SBATCH --time=0-01:00:00
+
+# Each node type has different modules avilable. Resetting makes the appropriate stack available
+module reset
+# This loads tinker9 on the gpu
+module load infer-skylake_v100/tinker9/1.4.0-nvhpc-21.11
+
+# This lets us know when the job starts and stops 
+echo "-------- Starting tinker9 minimization: `date` -------"
+
+# This line runs the minimization using tinker9
+tinker9 minimize filename.xyz_2 0.1 > min.log
+
+echo "------- tinker9 minimization has exited: `date` --------"
 ```
 
-This will launch a 1,000,000 step simulation of 1fs timestep, saving frames every 1ps in the ensemble 4 (NPT) with temperature 300K and pressure 1atm. Note that NVT is ensemble 2, in which case you will have `1000000 1.0 1.0 2 300.00 ` at the end of the command line. 
+Run this script by opening a terminal on Infer, the GPU, and typing `sbatch launch_minimize.sh`
+
+In addition to the output file `min.log`, output system coordinates will be saved as `Final_input.xyz_3`. It is good practice to center the system before any simulation, so do it again before running the molecular dynamics:
+`~/Tinker/xyzedit filename.xyz_3`, which will create a new file `filename.xyz_4`.
+
+####  Start the molecular dynamics simulation
+Using the latest system coordinate file, write the submission script `launch_dynamic.sh` containing:
+
+```sh
+#!/bin/bash
+#SBATCH --account=welbornlab
+#SBATCH --partition=v100_normal_q
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:1
+#SBATCH --time=3-12:00:00
+
+# Each node type has different modules avilable. Resetting makes the appropriate stack available
+module reset
+module load infer-skylake_v100/tinker9/1.4.0-nvhpc-21.11
+
+# Run the example
+echo "-------- Starting tinker9: `date` -------"
+
+tinker9 dynamic filename.xyz_4 30000000 1 10 4 300.00 1.0 > dynamics.log
+
+echo "------- tinker9 has exited: `date` --------"
+```
+
+This will launch a 30,000,000 step simulation of 1fs timestep, saving frames every 1ps in the ensemble 4 (NPT) with temperature 300K and pressure 1atm. 
+
+Run this script by opening a terminal on Infer, the GPU, and typing `sbatch launch_dynamic.sh`

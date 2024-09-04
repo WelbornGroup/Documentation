@@ -18,7 +18,7 @@ Workflow:
 
 **1.** Obtain and prepare your protein structure file. [Protein Prep](./ProteinPrep.md)
 
-**2.** [Optional] Parameterize small molecules with Poltype2. [Poltype Usage](./Poltype_Usage.md)
+**2.** [Optional] Parameterize any small molecules with Poltype2. [Poltype Usage](./Poltype_Usage.md)
 
 **3.** [Optional] Use Rosetta to create multiple starting conformations of your protein. [Rosetta](./Rosetta.md)
 

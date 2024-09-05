@@ -76,7 +76,7 @@ process_file('1kjl.pdb', '1kjl_stripped.pdb')
 ```
 I am using the 'stripped' term to note that our protein file now has no alt atom coordinates and no hydrogens still. Open and re-save the file in VMD to fix any numbering issues that could have arised. 
 
-We should see that our protein 1107 atoms and no duplicate entries for the residues.
+We should see that our protein has 1107 atoms and no duplicate entries for the residues.
 
 ### Add Hydrogens
 

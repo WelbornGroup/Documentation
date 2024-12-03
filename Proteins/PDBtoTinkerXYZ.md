@@ -76,7 +76,53 @@ for (i=1;i<=NF;i++) printf("%s%s", a[i], seps[i]); print ""}' $1 >> $2
 
 and can be used on `ligand.xyz` as follows `./atomtype.sh ligand.xyz ligand_atomtype.xyz`. This will create the file `ligand_atomtype.xyz` that contains the Tinker XYZ formatted ligand coordinates and corresponding atom types. 
 
-Alternatively a python script can be used to similar effect. ChatGPT is a useful tool for small scripts like this but keep backup files while testing scripts so you do not lose your progress!
+Alternatively a python script can be used to similar effect. ChatGPT is a useful tool for small scripts like this, BUT please keep backup files while testing scripts so you do not lose your progress by overwriting your only files with bad scripts!
+
+Here is an example python script:
+```
+import sys
+
+def process_file(input_file, output_file):
+    # Mapping of second word values to new sixth field values
+    field_map = {
+        "N6B": "253",
+        "H63": "260",
+        "H64": "260",
+        "C6B": "249",
+        "N1B": "257",
+        "C2B": "254",
+        "H2B": "259",
+        "N3B": "256",
+        "H62": "260"
+    }
+
+    with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
+        for line in infile:
+            fields = line.strip().split()  # Split the line into fields
+            if len(fields) < 6:
+                # Skip shorter lines
+                print(f"Skipping line: {line.strip()}", file=sys.stderr)
+                continue
+
+            # Modify the sixth word if the second word matches the mapping
+            if fields[1] in field_map:
+                fields[5] = field_map[fields[1]]
+
+            # Write the modified line to the output file
+            outfile.write("\t".join(fields) + "\n")
+
+# The following part allows for the input and output files to be stated in the command line
+if __name__ == "__main__":
+    # Ensure correct usage
+    if len(sys.argv) != 3:
+        print(f"Usage: python {sys.argv[0]} <input_file> <output_file>", file=sys.stderr)
+        sys.exit(1)
+
+    input_file = sys.argv[1]
+    output_file = sys.argv[2]
+
+    process_file(input_file, output_file)
+```
 
 5) Add the ligand coordinates at the end of `filename_hetatm.xyz` for a Tinker XYZ file that contains ALL atoms. This can be done by typing `cat filename_hetatm.xyz ligand_atomtype.xyz >> final_input.xyz` making sure to delete any blank likes (if there are any) between the two files. 
 

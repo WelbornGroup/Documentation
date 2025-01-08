@@ -2,6 +2,7 @@
 
 ###Set up
 
+This is the first step
 
 1) Log onto TinkerCliffs by typing in Terminal
 

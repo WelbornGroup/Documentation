@@ -26,6 +26,8 @@ We will use this single water to populate our waterbox with many waters. First w
 
 Let's assume for our `50x50x50` box we will need `11,000` water molecules ***you need to change this number to what you calculate***. 
 
+I prefer to do this in Tinker8 on my local machine, so the commands here are in Tinker8. For information on these commands in Tinker9, look into [running-tinker9-basics.md](./running-tinker9-basics.md)
+
 Now in your directory with your TinkerXYZ polymer file, open a terminal and run `/Tinker/xyzedit water.xyz` and name the parameter file when prompted `beta_glucose_params.prm`.
 
 You should see the pop-up menu for `xyzedit`, read through the various ways this tool can be used to manipulate your structure file. (Note: different versions of tinker may have different numbering for the commands in `xyzedit`).
@@ -46,7 +48,7 @@ To check that the calculations were correct we could use `/Tinker/analyze waterb
 
 *The system density should be close to 1*.
 
-### Insert Protein
+### Insert Polymer
 
 Now in your directory with your TinkerXYZ polymer file, open a terminal and run `/Tinker/xyzedit polymer_filename.xyz`.
 
@@ -58,7 +60,7 @@ Next select `(24) Soak Current Molecule in Box of Solvent`.
 
 This will prompt you for your solvent box name: `waterbox_50.xyz`
 
-There will be a new structure file generated (`polymer_filename.xyz_2`) which will be your centered carbohydrate in the minimized waterbox.
+There will be a new structure file generated (`polymer_filename.xyz_2`) which will be your centered polymer in the minimized waterbox.
 
 You should download and open this file in VMD to make sure it looks okay with no obvious errors.
 
@@ -87,6 +89,6 @@ Repeat this process now to add chloride ions:
 
 Solute range now needs to include the new ions! `-1 2230 -51005 51033`.
 
-And the atom type will be different for Chloride (Cl-) `363 33`.
+And the atom type will be different for Chloride (Cl-) `363 33` (assuming I'm adding `33` Chloride ions).
 
-With that you can pull up the final (`polymer_filename.xyz_4`) in VMD to visually check the box! Duplicate and rename this file to `polymer_solv.xyz`.
+With that you can pull up the final (`polymer_filename.xyz_4`) in VMD to visually check the box! Duplicate and rename this file to `polymer_solv.xyz`. This will be your input file for whatever MD you might run. We usually minimize this system before we run the MD, but it depends on the project you're working on.

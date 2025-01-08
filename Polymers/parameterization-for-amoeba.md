@@ -13,6 +13,8 @@ Here we will parameterize a beta-blucose dimer, to be able to parameterize a pol
 
 We will first make the molecule using PyMOL builder. You can download PyMOL [here](https://pymol.org/), and get an academic license if you need it.
 
+Here is a repeat of some steps mentioned in [create-polymer-with-pymol.md](./create-polymer-with-pymol.md).
+
 The first step is to make a beta-blucose monomer and paramterizing it with Poltype2. Open PyMOL, click `Builder` on the top-right side, and build the glucose ring.
 
 ** HINT - You can use the 6-membered ring to start with, that way, you can get the hexagonal ring in one go. **

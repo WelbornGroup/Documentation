@@ -33,7 +33,7 @@ Since we would need to model the behaviour of that oxygen as it bonds to the nex
 Save it as a PDB and an SDF file. (Here I've named them `BGM_OC`, and will be referring to this molecule as the "functionalized monomer".)
 
 NOTE - Also make the beta-glucose dimer, and save it as a PDB file. We will use it later, when we check out parameters.
-To know how to make dimers and polymers, see this [short tutorial](./create-polymer-with-pymol.md).
+To know how to make dimers and polymers, see this [create-polymer-with-pymol.md](./create-polymer-with-pymol.md).
 
 ### Structure input files
 So far, we have the following SDF files we will use as inputs:

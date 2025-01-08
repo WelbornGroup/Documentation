@@ -316,7 +316,7 @@ and the atom types look like:
 
 
 ### Building a parameter file
-The file `final.key` contains the parameters for the regular and functionalized monomer. We need to copy them to a `.prm` file, which can be read by Tinker when we run and MD using the AMOEBA Force Field. But the `final.key` file also has a lot of comments, which start with a `#` symbol, which I prefer removing. To do so, I have a python script `copyfile.py`.
+The file `final.key` contains the parameters for the regular and functionalized monomer. We need to copy them to a `.prm` file, which can be read by Tinker9 when we run and MD using the AMOEBA Force Field. But the `final.key` file also has a lot of comments, which start with a `#` symbol, which I prefer removing. To do so, I have a python script `copyfile.py`.
 ````sh
 def copy_file_excluding_comments(input_file, output_file):
     with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
@@ -341,10 +341,10 @@ atom          504    504    C     "BGM                 "         6    12.011    
 ````
 Copy all the atom definitions, and add them to the list of atom definitions in the `amoebabio18.prm` file (after the atom types for amino acids, NAs, Ions etc, and before the `SOLUTE` parameters). 
 For the other parameters in the `beta_glucose_test.prm` file (torsion, SOLUTE, polarize, mutipole, bond, angle, strbend, vdw - the order that I have in my test file), simply add all those lines at the bottom of the `amoebabio18.prm` file. Save this file, and rename it to `beta_glucose_params.prm`.
-We will use this file to add new parameters, and run MD in Tinker.
+We will use this file to add new parameters, and run MD in Tinker9.
 
 ### Adding Parameters for the Linkage
-Save the pdb file for the dimer in a new folder, let's call it `BGD` and the file name for the dimer is `BGD.pdb`. Copy the `beta_glucose_params.prm` file to that folder as well. You'll need another file to run Tinker commands, called `tinker.key` which will let Tinker know about the parameter file and general system information. You can learn more about running Tinker commands [here](./running-tinker-basics.md). For now, my `tinker.key` file looks like this:
+Save the pdb file for the dimer in a new folder, let's call it `BGD` and the file name for the dimer is `BGD.pdb`. Copy the `beta_glucose_params.prm` file to that folder as well. You'll need another file to run Tinker commands, called `tinker.key` which will let Tinker know about the parameter file and general system information. You can learn more about running Tinker commands [here](./running-tinker9-basics.md). For now, my `tinker.key` file looks like this:
 ````sh
 parameters beta_glucose_params.prm
 
@@ -352,9 +352,7 @@ a-axis 50.00
 b-axis 50.00
 c-axis 50.00
 
-integrator verlet
-thermostat bussi
-barostat montecarlo
+integrator nose-hoover
 polar-eps 0.000010
 vdw-cutoff 10.0
 ewald
@@ -365,7 +363,9 @@ polarization mutual
 
 It shows a cubic box of side length 50 A, and that the parameters can be found in `beta_glucose_params.prm`. We will keep the discussion on the other terms for some other time.
 
-Now convert the pdb structure of the beta-glucose dimer to Tinker XYZ format. You can do that using Tinker's `pdbxyz` executable, with the input as `BGD.pdb` (the pdb file for the dimer), and the parameters as `beta_glucose_params.prm`. To do so, run the command `~/path-to-tinker/analyze BGD.pdb -k tinker.key`. Change the path to Tinker as needed. This will give you a `BGD.xyz` file, which will be the Tinker XYZ file for the dimer. Open the file in a text editor, and change the atom types of the atoms as per the atom types you have in the monomer.
+Now convert the pdb structure of the beta-glucose dimer to Tinker XYZ format. I usually prefer to do this in my local machine, which has Tinker8 (the commands here for `pdbxyz`, `xyzedit` and `analyze` are shown for Tinker8). You can also do so in Tinker9 on ARC(Infer), in which case you'll have to modify the command accordingly. For more information on using Tinker9 on ARC check out the documentation [here](./running-tinker9-basics.md).
+
+You can convert the PDB to Tinker XYZ using Tinker's `pdbxyz` executable, with the input as `BGD.pdb` (the pdb file for the dimer), and the parameters as `beta_glucose_params.prm`. To do so, run the command `~/path-to-tinker/analyze BGD.pdb -k tinker.key`. Change the path to Tinker as needed. This will give you a `BGD.xyz` file, which will be the Tinker XYZ file for the dimer. Open the file in a text editor, and change the atom types of the atoms as per the atom types you have in the monomer.
 
 Note that the dimer will have `2*n-3` atoms, where `n` is the number of atoms in the monomer. In our case, we have assumed that atoms with atom types 509 (O), 515 (H) and 512 (H) leave as a water molecule, so the bridging oxygen will have the atom type of 503.
 
@@ -740,7 +740,7 @@ TASK - Make a trimer, convert to Tinker XYZ, and edit the atom types. Run `Tinke
 
 ### Running Minimization and Dynamics
 
-Now that you have a parameter file, you can run `Tinker/minimize` and `Tinker/dynamic` on the molecule (or you can solvate it first) by following the steps [here](./running-tinker-basics.md).
+Now that you have a parameter file, you can run `Tinker/minimize` and `Tinker/dynamic` on the molecule (or you can solvate it first) by following the steps [here](./running-tinker9-basics.md). In this tutorial, there has been made a distinction between Tinker8 and Tinker9, and you may use any one as you feel appropriate. When running dynamics (the `dynamic` command), use Tinker9 since it runs on GPU and is much much faster.
 
 ## Parameterizing Polymers
 You should be able to parameterize any polymer you want. The steps to follow are:
